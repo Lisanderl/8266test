@@ -78,9 +78,13 @@ void loop() {
   delay(2000);
     pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
     Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
+    
+ delay(2000);
+    Serial.println(pwmServo1.pwmForAngle(0));   // Should output 307 for 0°
+
   delay(2000);
-    pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(90));
-    Serial.println(pwmController.getChannelPWM(0)); // Should output 512 for +90°
+    pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
+    Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
 }
 
 
