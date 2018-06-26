@@ -6,6 +6,7 @@
 
 
 PCA9685 pwmController;
+PCA9685_ServoEvaluator pwmServo1;
 
 uint8_t portArray[] = {16, 5, 4, 0, 2, 14, 12, 13};
 String portMap[] = {"GPIO16", "GPIO5", "GPIO4", "GPIO0", "GPIO2", "GPIO14", "GPIO12", "GPIO13"};
@@ -69,12 +70,17 @@ void setup() {
    delay(1000);
     pwmController.resetDevices();      
     pwmController.init(B000000);       
+    pwmController.setPWMFrequency(50);
    pwmController.printModuleInfo();
 }
 
 void loop() {
   delay(2000);
-   Serial.println("all ok");
+    pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
+    Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
+  delay(2000);
+    pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(90));
+    Serial.println(pwmController.getChannelPWM(0)); // Should output 512 for +90°
 }
 
 
