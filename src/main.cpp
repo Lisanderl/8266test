@@ -3,11 +3,13 @@
 
 #include <Wire.h>
 #include "PCA9685.h"
+#include "Pad.h"
 
 
 PCA9685 pwmController;
 PCA9685_ServoEvaluator pwmServo1;
 
+Pad simplePad(pwmController, pwmServo1, 0, 1);
 uint8_t portArray[] = {16, 5, 4, 0, 2, 14, 12, 13};
 String portMap[] = {"GPIO16", "GPIO5", "GPIO4", "GPIO0", "GPIO2", "GPIO14", "GPIO12", "GPIO13"};
 
@@ -71,20 +73,26 @@ void setup() {
     pwmController.resetDevices();      
     pwmController.init(B000000);       
     pwmController.setPWMFrequency(50);
-   pwmController.printModuleInfo();
 }
 
 void loop() {
+  Serial.println("Start");
   delay(2000);
-    pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
-    Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
-    
+    // pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
+    // Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
+    simplePad.verticalMove(LOW_POSITION);
+    simplePad.horisontalMove(LOW_POSITION);
  delay(2000);
-    Serial.println(pwmServo1.pwmForAngle(0));   // Should output 307 for 0°
-
+    // Serial.println(pwmServo1.pwmForAngle(0));   // Should output 307 for 0°
+    simplePad.verticalMove(AVARAGE_POSITION);
+    simplePad.horisontalMove(AVARAGE_POSITION);
   delay(2000);
-    pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
-    Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
+    // pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
+    // Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
+     simplePad.verticalMove(FULL_POSITION);
+    simplePad.horisontalMove(FULL_POSITION);
+     delay(2000);
+     Serial.println("end");
 }
 
 
