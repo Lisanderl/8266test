@@ -9,6 +9,14 @@ void Pad::horisontalMove(int val){
      _servoController->setChannelPWM(_horizontalServo, _servoEvaluator->pwmForAngle(val));
 }
 
+void Pad::smartHorisontalMove(int val){
+     _servoController->setChannelPWM(_horizontalServo, _servoEvaluator->pwmForAngle(DEFAULT_TOP));
+     delay(5);
+     _servoController->setChannelPWM(_verticalServo, _servoEvaluator->pwmForAngle(val));
+     delay(5);
+      _servoController->setChannelPWM(_horizontalServo, _servoEvaluator->pwmForAngle(DEFAULT_BOTTOM));
+}
+
 void Pad::verticalMove(int val){
      _servoController->setChannelPWM(_verticalServo, _servoEvaluator->pwmForAngle(val));
 }

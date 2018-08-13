@@ -19,8 +19,12 @@ class Pad {
 
     void verticalMove(int val);
     void horisontalMove(int val);
+    void smartHorisontalMove(int val);
 
     private:
+    int const DEFAULT_TOP = 45;
+    int const DEFAULT_BOTTOM = -45;
+
     int _verticalServo;
     int _horizontalServo;
     PCA9685 *_servoController;

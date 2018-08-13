@@ -19,12 +19,10 @@ MoveController(int pawPairs);
 
 void defaultPosition();
 
+
 private:
 
-void fullFront();
-void fullBack();
-void fullLeft();
-void fullRight();
+
 
 PCA9685 *pwmController;
 PCA9685_ServoEvaluator *leftServoEvaluator = nullptr;
