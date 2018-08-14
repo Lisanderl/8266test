@@ -1,15 +1,10 @@
 #ifndef Pad_H
 #define Pad_H
 
-
 #if defined(ARDUINO) && ARDUINO >= 100
 #include <Arduino.h>
 #include "PCA9685.h"
 #endif
-
-#define FULL_POSITION 90
-#define AVARAGE_POSITION 0
-#define LOW_POSITION -90
 
 
 class Pad {
@@ -20,6 +15,8 @@ class Pad {
     void verticalMove(int val);
     void horisontalMove(int val);
     void smartHorisontalMove(int val);
+
+
 
     private:
     int const DEFAULT_TOP = 45;

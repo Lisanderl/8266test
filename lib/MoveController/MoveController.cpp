@@ -10,10 +10,31 @@ MoveController::MoveController(int pawPairs){
     pads.push_back(new Pad(*pwmController, *leftServoEvaluator, i, i+1));
     pads.push_back(new Pad(*pwmController, *rightServoEvaluator, i+2, i+3));
  }
- Pad pad(*pwmController, *leftServoEvaluator, 1, 1+1);
+}
+
+void MoveController::smartRotation(int val){
+for(unsigned int i = 0; i < pads.size(); i++){
+ 
+  pads.at(i)->smartHorisontalMove(val);
+ }
+}
+
+void MoveController::crawlRotation(int val){
+for(unsigned int i = 0; i < pads.size(); i++){
+ 
+  pads.at(i)->horisontalMove(val);
+ }
 }
 
 void MoveController::defaultPosition(){
-
- 
+  smartRotation(AVARAGE_POSITION);
 }
+
+void MoveController::frontPosition(){
+   smartRotation(FULL_POSITION);
+}
+
+void MoveController::backPosition(){
+   smartRotation(LOW_POSITION);
+}
+
