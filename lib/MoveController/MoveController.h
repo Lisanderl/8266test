@@ -7,7 +7,7 @@
     int const  LOW_VAL = 97;
 
     int const FULL_POSITION = 90;
-    int const AVARAGE_POSITION = 0;
+    int const DEFAULT_POSITION = 0;
     int const LOW_POSITION = -90;
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -22,9 +22,9 @@ public:
 
 MoveController(int pawPairs);
 
-void defaultPosition();
-void frontPosition();
-void backPosition();
+void defaultPosition(boolean witVertical);
+void frontPosition(boolean witVertical);
+void backPosition(boolean witVertical);
 
 private:
 

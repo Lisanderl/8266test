@@ -12,13 +12,14 @@ MoveController::MoveController(int pawPairs){
  }
 }
 
+// does horizontal move for all pads, with vertical move
 void MoveController::smartRotation(int val){
 for(unsigned int i = 0; i < pads.size(); i++){
  
   pads.at(i)->smartHorisontalMove(val);
  }
 }
-
+// does horizontal move for all pads, without vertical move
 void MoveController::crawlRotation(int val){
 for(unsigned int i = 0; i < pads.size(); i++){
  
@@ -26,15 +27,15 @@ for(unsigned int i = 0; i < pads.size(); i++){
  }
 }
 
-void MoveController::defaultPosition(){
-  smartRotation(AVARAGE_POSITION);
+void MoveController::defaultPosition(boolean witVertical){
+ witVertical ? smartRotation(DEFAULT_POSITION) : crawlRotation(DEFAULT_POSITION);
 }
 
-void MoveController::frontPosition(){
-   smartRotation(FULL_POSITION);
+void MoveController::frontPosition(boolean witVertical){
+   witVertical ? smartRotation(FULL_POSITION) : crawlRotation(FULL_POSITION); 
 }
 
-void MoveController::backPosition(){
-   smartRotation(LOW_POSITION);
+void MoveController::backPosition(boolean witVertical){
+   witVertical ? smartRotation(LOW_POSITION) : crawlRotation(LOW_POSITION);
 }
 
