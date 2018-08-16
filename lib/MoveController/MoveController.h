@@ -20,11 +20,15 @@ class MoveController {
 
 public: 
 
+enum Direction {STRAIGHT, BACK, LEFT, RIGHT};
+
 MoveController(int pawPairs);
 
 void defaultPosition(boolean witVertical);
 void frontPosition(boolean witVertical);
 void backPosition(boolean witVertical);
+
+void step(Direction val);
 
 private:
 

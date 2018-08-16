@@ -25,23 +25,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Start");
-  delay(2000);
-    // pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
-    // Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
-    simplePad.verticalMove(LOW_POSITION);
-    simplePad.horisontalMove(LOW_POSITION);
- delay(2000);
-    // Serial.println(pwmServo1.pwmForAngle(0));   // Should output 307 for 0°
-    simplePad.verticalMove(AVARAGE_POSITION);
-    simplePad.horisontalMove(AVARAGE_POSITION);
-  delay(2000);
-    // pwmController.setChannelPWM(0, pwmServo1.pwmForAngle(-90));
-    // Serial.println(pwmController.getChannelPWM(0)); // Should output 102 for -90°
-     simplePad.verticalMove(FULL_POSITION);
-    simplePad.horisontalMove(FULL_POSITION);
-     delay(2000);
-     Serial.println("end");
+
 }
 
 
