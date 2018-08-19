@@ -11,8 +11,8 @@ PCA9685 pwmController;
 // default 102 307 512
 PCA9685_ServoEvaluator pwmServo1(97, 302, 507);
 
-Pad simplePad(pwmController, pwmServo1, 0, 1);
-
+Pad simplePad1(pwmController, pwmServo1, 0, 1);
+Pad simplePad2(pwmController, pwmServo1, 2, 3);
 void setup() {
   Serial.begin(115200);
    delay(1000);
@@ -25,7 +25,15 @@ void setup() {
 }
 
 void loop() {
-
+  Serial.println("all ok");
+simplePad1.smartHorisontalMove(40);
+ delay(2000);
+simplePad1.smartHorisontalMove(-60);
+ delay(5000);
+simplePad2.smartHorisontalMove(35);
+ delay(2000);
+simplePad2.smartHorisontalMove(-55);
+ delay(5000);
 }
 
 
