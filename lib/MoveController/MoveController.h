@@ -20,7 +20,7 @@ class MoveController {
 
 public: 
 
-enum Direction {STRAIGHT, BACK, LEFT, RIGHT};
+enum Direction {STRAIGHT = 1, BACK = 2, LEFT = 3, RIGHT = 4};
 
 MoveController(int pawPairs);
 
@@ -28,7 +28,7 @@ void defaultPosition(boolean witVertical);
 void frontPosition(boolean witVertical);
 void backPosition(boolean witVertical);
 
-void step(Direction val);
+void step(int val);
 
 private:
 

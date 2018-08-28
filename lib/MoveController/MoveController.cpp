@@ -37,7 +37,7 @@ void MoveController::backPosition(boolean witVertical){
    witVertical ? smartRotation(LOW_POSITION) : crawlRotation(LOW_POSITION);
 }
 
-void MoveController::step(Direction val){
+void MoveController::step(int val){
   switch(val){
     case STRAIGHT : {
       frontPosition(true);
