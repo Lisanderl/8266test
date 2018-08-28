@@ -6,7 +6,7 @@ $(document).ready(function(){
   };
   
   function sendAction( name, steps, actionId ) {
-      $.post( "/action", {"action": { "name": name, "steps": steps, "actionId": actionId }})
+      $.post( "/action", {"name": name, "steps": steps, "actionId": actionId})
           .done(function( data ) {
               alert( "Data Loaded: " + data );
           })

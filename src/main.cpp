@@ -18,7 +18,7 @@ String const actionId = "actionId";
 //WIFI CONFIG
 const char* ssid = "Lisanderl";
 const char* password = "12345ASD";
-ESP8266WebServer restController(80);
+ESP8266WebServer restController(85);
 IPAddress myIP;
 
 
@@ -36,19 +36,17 @@ MoveController moveController(2);
  * if not, send 404
  */
 void action(){
-
-  if(restController.hasArg("action")){
-    StaticJsonBuffer<50> jsonBuffer;
-    JsonObject& jsonBody = jsonBuffer.parseObject(restController.arg("action"));
-    if((jsonBody.containsKey(actionId)) && (jsonBody.containsKey(steps))){
+  Serial.print("start action arg: ");
+ 
+    if((restController.hasArg(steps)) && (restController.hasArg(actionId))){
       Serial.println("start mooving");
       restController.send(200);
-      for(int i = 0; i<jsonBody.get<int>(steps); i++){
-      moveController.step(jsonBody.get<int>(actionId));
+      for(int i = 0; i < restController.arg(steps); i++){
+      moveController.step(restController.arg(actionId));
       }
       return;
     } 
-}
+
 restController.send(404, "text/plain", "can't read data from JSON");
 }
 
@@ -98,13 +96,14 @@ void handleWebRequests(){
     message += " NAME:"+restController.argName(i) + "\n VALUE:" + restController.arg(i) + "\n";
   }
   restController.send(404, "text/plain", message);
+  Serial.println("message error");
   Serial.println(message);
 }
 
 void handleRoot(){
 
-  restController.sendHeader("Location", "/index.html", true);   //Redirect to our html web page
-  restController.send(200, "text/plane","");
+restController.sendHeader("Location", "/index.html", true);
+restController.send ( 302, "text/plain", "");
 }
 
 void restConfig(){
