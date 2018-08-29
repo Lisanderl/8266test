@@ -1,53 +1,77 @@
 #controls {
 	margin: auto;
-    height: 200px;
-    width: 220px;
+    height: 25%;
+    width: 25%;
     border: 3px solid black;
     padding: 10px;
 	background: gray
 }
 #controls #slider-wrapper {
 	position: relative;
-    top: 2px;
-	left: 30px;
+    height: 25%;
+    width: 95%;
+    top: 1%;
+	left: 1%;
 	
 }
 
-#controls #slider-wrapper input {
+#controls #button-wrappern {
 
-  width: 150px;
-  height: 15px;
-  padding: 2px;	
+    position: relative;
+    height: 73%;
+    width: 95%;
+    top: 1%;
+    left: 1%;
 }
 
+#controls #slider-wrapper p{
+    font-size: 15px;
+    position: relative;
+    left: 45%;
+}
+
+#controls #slider-wrapper input {
+  width: 95%;
+  height: 20%;
+  padding: 1px;
+}
+
+
+
 #controls button {
+    margin: auto;
     padding: 2px;
-	height: 35px;
-    width: 60px;
+	height: 15%;
+    width: 25%;
 	border: 2px solid black;
 }
 
 #controls #straight {
-    position: relative;
-    top: 5px;
-	left: 80px;
+    position: absolute;
+    left: 40%;
 }
 
 #controls #back {
-    position: relative;
-    top: 100px;
-	left: 15px;
+    position: absolute;
+    top: 70%;
+    left: 40%;
 }
 
 #controls #left {
-    position: relative;
-    top: 20px;
-	left: 15px;
+    position: absolute;
+    top: 50%;
+    left: 10%;
 }
 
 #controls #right {
-    position: relative;
-    top: 20px;
-	left: 80px;
+    position: absolute;
+    top: 50%;
+    left: 70%;
+}
+
+.centered {
+    position: absolute; /* or absolute */
+    top: 20%;
+    left: 40%;
 }
 

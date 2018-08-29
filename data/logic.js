@@ -10,8 +10,8 @@ $(document).ready(function(){
           .done(function( data ) {
               alert( "Data Loaded: " + data );
           })
-          .fail(function( ) {
-              alert( "Somethink went wrong: " + name );
+          .fail(function(xhr, textStatus ) {
+              alert( "Somethink went wrong: " + name  + ", status: " + textStatus + ", error message: " + xhr.responseText );
           });
   }
 
@@ -30,6 +30,11 @@ $(document).ready(function(){
 
     $( "#right" ).click(function() {
         sendAction(this.id, getSteps(), 4);
+    });
+
+    $("#sliderValue").html(getSteps());
+    $("#steps").change(function() {
+       $("#sliderValue").html(getSteps());
     });
 
 });

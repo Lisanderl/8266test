@@ -6,22 +6,20 @@
 	<link rel="stylesheet" href="\style.css">
 </head>
 <body>
-<script>
-
-</script>
- <div id='controls'>
+ <div id='controls' class="centered">
 	
    <div id="slider-wrapper">
-  0<input id="steps" type="range" min="0" max="11" value="2" step="1">11
+       <p >Value: <span id="sliderValue"></span></p>
+  <input id="steps" type="range" min="0" max="11" value="2" step="1">
     </div>
-		
-   <div>		
+
+     <div id="button-wrapper">
   <button type="button" id='straight'>straight</button> 
   <button type="button" id='back'>back</button> 
-   </div>
+
   <button type="button" id='left'>left</button> 
-  <button type="button" id='right'>right</button> 
-  
+  <button type="button" id='right'>right</button>
+     </div>
  </div>
 </body>
 </html>

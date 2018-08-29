@@ -3,7 +3,6 @@
 
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <ArduinoJson.h>
 #include <FS.h> 
 
 #include <Wire.h>
@@ -40,9 +39,11 @@ void action(){
  
     if((restController.hasArg(steps)) && (restController.hasArg(actionId))){
       Serial.println("start mooving");
-      restController.send(200);
-      for(int i = 0; i < restController.arg(steps); i++){
-      moveController.step(restController.arg(actionId));
+      restController.send(200,  "text/plain", "Do some steps");
+      int recivedSteps = restController.arg(steps).toInt();
+      int recivedActionId = restController.arg(actionId).toInt();
+      for(int i = 0; i < recivedSteps; i++){
+      moveController.step(recivedActionId);
       }
       return;
     } 
