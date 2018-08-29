@@ -20,7 +20,7 @@ class MoveController {
 
 public: 
 
-enum Direction {STRAIGHT = 1, BACK = 2, LEFT = 3, RIGHT = 4};
+enum Direction {STRAIGHT = 1, BACK = 2, LEFT = 3, RIGHT = 4, LEFT_TURN = 5, RIGHT_TURN = 6};
 
 MoveController(int pawPairs);
 
@@ -32,8 +32,10 @@ void step(int val);
 
 private:
 
-void smartRotation(int val);
-void crawlRotation(int val);
+void smartLeftRotation(int val);
+void smartRightRotation(int val);
+void crawlLeftRotation(int val);
+void crawlRightRotation(int val);
 
 PCA9685 *pwmController;
 PCA9685_ServoEvaluator *leftServoEvaluator = nullptr;

@@ -17,7 +17,7 @@ String const actionId = "actionId";
 //WIFI CONFIG
 const char* ssid = "Lisanderl";
 const char* password = "12345ASD";
-ESP8266WebServer restController(85);
+ESP8266WebServer server(85);
 IPAddress myIP;
 
 
@@ -37,18 +37,18 @@ MoveController moveController(2);
 void action(){
   Serial.print("start action arg: ");
  
-    if((restController.hasArg(steps)) && (restController.hasArg(actionId))){
+    if((server.hasArg(steps)) && (server.hasArg(actionId))){
       Serial.println("start mooving");
-      restController.send(200,  "text/plain", "Do some steps");
-      int recivedSteps = restController.arg(steps).toInt();
-      int recivedActionId = restController.arg(actionId).toInt();
+      server.send(200,  "text/plain", "Do some steps");
+      int recivedSteps = server.arg(steps).toInt();
+      int recivedActionId = server.arg(actionId).toInt();
       for(int i = 0; i < recivedSteps; i++){
       moveController.step(recivedActionId);
       }
       return;
     } 
 
-restController.send(404, "text/plain", "can't read data from JSON");
+server.send(404, "text/plain", "can't read data from JSON");
 }
 
 
@@ -73,8 +73,8 @@ bool loadFromSpiffs(String path){
   else if(path.endsWith(".pdf")) dataType = "application/pdf";
   else if(path.endsWith(".zip")) dataType = "application/zip";
   File dataFile = SPIFFS.open(path.c_str(), "r");
-  if (restController.hasArg("download")) dataType = "application/octet-stream";
-  if (restController.streamFile(dataFile, dataType) != dataFile.size()) {
+  if (server.hasArg("download")) dataType = "application/octet-stream";
+  if (server.streamFile(dataFile, dataType) != dataFile.size()) {
   }
  Serial.print("path :");
  Serial.println(path);
@@ -84,35 +84,35 @@ bool loadFromSpiffs(String path){
 
 void handleWebRequests(){
 
-  if(loadFromSpiffs(restController.uri())) return;
+  if(loadFromSpiffs(server.uri())) return;
   String message = "File Not Detected\n\n";
   message += "URI: ";
-  message += restController.uri();
+  message += server.uri();
   message += "\nMethod: ";
-  message += (restController.method() == HTTP_GET)?"GET":"POST";
+  message += (server.method() == HTTP_GET)?"GET":"POST";
   message += "\nArguments: ";
-  message += restController.args();
+  message += server.args();
   message += "\n";
-  for (uint8_t i=0; i<restController.args(); i++){
-    message += " NAME:"+restController.argName(i) + "\n VALUE:" + restController.arg(i) + "\n";
+  for (uint8_t i=0; i<server.args(); i++){
+    message += " NAME:"+server.argName(i) + "\n VALUE:" + server.arg(i) + "\n";
   }
-  restController.send(404, "text/plain", message);
+  server.send(404, "text/plain", message);
   Serial.println("message error");
   Serial.println(message);
 }
 
 void handleRoot(){
 
-restController.sendHeader("Location", "/index.html", true);
-restController.send ( 302, "text/plain", "");
+server.sendHeader("Location", "/index.html", true);
+server.send ( 302, "text/plain", "");
 }
 
 void restConfig(){
 
-  restController.on("/", handleRoot);
-  restController.on("/action", HTTP_POST, action);
-  restController.onNotFound(handleWebRequests); 
-  restController.begin();
+  server.on("/", handleRoot);
+  server.on("/action", HTTP_POST, action);
+  server.onNotFound(handleWebRequests); 
+  server.begin();
 }
 
 
@@ -137,7 +137,7 @@ void setup() {
 
 void loop() {
 
-   restController.handleClient();
+   server.handleClient();
 // simplePad1.smartHorisontalMove(40);
 //  delay(2000);
 // simplePad1.horisontalMove(-60);
@@ -146,10 +146,6 @@ void loop() {
 //  delay(2000);
 // simplePad2.horisontalMove(-55);
 
-//  File f = SPIFFS.open("/logic.js", "r");
-//  Serial.println(f.size());
-//  Serial.println(f);
-//  f.close();
 }
 
 
