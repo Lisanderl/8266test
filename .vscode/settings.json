@@ -1,0 +1,19 @@
+{
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\Users\\oshevchuk\\.platformio\\penv\\Scripts;C:\\Users\\oshevchuk\\.platformio\\penv;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Java\\jdk1.8.0_152;C:\\Program Files\\apache-maven-3.5.2\\bin;C:\\Program Files\\jetty\\bin;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\nodejs\\;C:\\Program Files\\LLVM\\bin;C:\\Program Files\\SlikSvn\\bin;C:\\Program Files\\Java\\jdk1.8.0_181\\bin;C:\\Gradle\\gradle-4.9\\bin;C:\\groovy\\groovy-2.5.1\\bin;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\oshevchuk\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\oshevchuk\\AppData\\Roaming\\npm;C:\\Program Files\\Microsoft VS Code\\bin;;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Java\\jdk1.8.0_152;C:\\Program Files\\apache-maven-3.5.2\\bin;C:\\Program Files\\jetty\\bin;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\nodejs\\;C:\\Program Files\\LLVM\\bin;C:\\Program Files\\SlikSvn\\bin;C:\\Program Files\\Java\\jdk1.8.0_181\\bin;C:\\Gradle\\gradle-4.9\\bin;C:\\groovy\\groovy-2.5.1\\bin;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\oshevchuk\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\oshevchuk\\AppData\\Roaming\\npm;C:\\Program Files\\Microsoft VS Code\\bin;",
+        "PLATFORMIO_CALLER": "vscode"
+    },
+    "files.associations": {
+        "array": "cpp",
+        "deque": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "initializer_list": "cpp",
+        "functional": "cpp",
+        "istream": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp",
+        "*.tcc": "cpp",
+        "fstream": "cpp"
+    }
+}
