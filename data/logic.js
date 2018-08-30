@@ -1,40 +1,42 @@
-$(document).ready(function(){
+document.addEventListener('DOMContentLoaded', function() {
 	
 
   function getSteps() {
-      return $( "#steps" ).val();
-  };
-  
-  function sendAction( name, steps, actionId ) {
-      $.post( "/action", {"name": name, "steps": steps, "actionId": actionId})
-          .done(function( data ) {
-              alert( "Data Loaded: " + data );
-          })
-          .fail(function(xhr, textStatus ) {
-              alert( "Somethink went wrong: " + name  + ", status: " + textStatus + ", error message: " + xhr.responseText );
-          });
+      return  document.getElementById("steps").value;
   }
 
+    function sendAction( name, steps, actionId ) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/action');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({"name": name, "steps": steps, "actionId": actionId}));
+
+    }
+
     //logic for buttons on UI
-    $( "#straight" ).click(function() {
+    document.getElementById("straight").onclick = function() {
         sendAction(this.id, getSteps(), 1);
-    });
+        console.log('clicked ' + this.id);
+    };
 
-    $( "#back" ).click(function() {
-        sendAction(this.id, getSteps(), 2);
-    });
+    document.getElementById("back").onclick = function() {
+        sendAction(this.id, getSteps(), 1);
+        console.log('clicked ' + this.id);
+    };
 
-    $( "#left" ).click(function() {
-        sendAction(this.id, getSteps(), 3);
-    });
+    document.getElementById("left").onclick = function() {
+        sendAction(this.id, getSteps(), 1);
+        console.log('clicked ' + this.id);
+    };
 
-    $( "#right" ).click(function() {
-        sendAction(this.id, getSteps(), 4);
-    });
+    document.getElementById("right").onclick = function() {
+        sendAction(this.id, getSteps(), 1);
+        console.log('clicked ' + this.id);
+    };
 
-    $("#sliderValue").html(getSteps());
-    $("#steps").change(function() {
-       $("#sliderValue").html(getSteps());
-    });
+    document.getElementById("sliderValue").textContent = getSteps();
+    document.getElementById("steps").onchange = function() {
+        document.getElementById("sliderValue").textContent = getSteps();
+         };
 
 });
