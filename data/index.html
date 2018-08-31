@@ -2,26 +2,27 @@
 <html>
 <head>
     <script type="text/javascript" src="vanilla.js"></script>
-	<script type="application/javascript" src="logic.js"> </script>
-	<link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="spectre.min.css">
     <link rel="stylesheet" href="spectre-exp.min.css">
     <link rel="stylesheet" href="spectre-icons.min.css">
+  <!--   <link rel="stylesheet" href="style.my.css"> -->
+    <script type="application/javascript" src="logic.js"> </script>
+	
 </head>
 <body>
  <div id='controls' class="centered">
-	
+
    <div id="slider-wrapper">
-       <p >Value: <span id="sliderValue"></span></p>
+       <p > <kbd> Value: <span id="sliderValue"></span> </kbd> </p>
   <input id="steps" type="range" min="0" max="11" value="2" step="1">
     </div>
 
      <div id="button-wrapper">
-  <button class="btn" id='straight'>straight</button>
-  <button  class="btn" id='back'>back</button>
+  <button class="btn btn-primary" id='straight'><i class="icon icon-arrow-up"></i></button>
+  <button  class="btn btn-primary" id='back'><i class="icon icon-arrow-down"></i></button>
 
-  <button class="btn" id='left'>left</button>
-  <button class="btn" id='right'>right</button>
+  <button class="btn btn-primary" id='left'> <i class="icon icon-arrow-left"></i> </button>
+  <button class="btn btn-primary" id='right'> <i class="icon icon-arrow-right"></i> </button>
      </div>
  </div>
 </body>
