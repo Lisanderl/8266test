@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //logic for buttons on UI
     document.getElementById("straight").onclick = function() {
         sendAction(this.id, getSteps(), 1);
-        console.log('clicked ' + this.id);
+        console.log('clicked ' + this.id + 'steps ' + getSteps());
     };
 
     document.getElementById("back").onclick = function() {

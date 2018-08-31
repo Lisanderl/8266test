@@ -14,7 +14,10 @@
             "name": "PIO Debug",
             "executable": "c:/Users/oshevchuk/Documents/PlatformIO/Projects/8266test/.pioenvs/esp12e_windows/firmware.elf",
             "toolchainBinDir": "",
-            "preLaunchTask": "PlatformIO: Pre-Debug",
+            "preLaunchTask": {
+                "type": "PlatformIO",
+                "task": "Pre-Debug"
+            },
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
