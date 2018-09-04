@@ -4,6 +4,7 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <FS.h> 
+#include <ArduinoJson.h> 
 
 #include <Wire.h>
 #include "PCA9685.h"
@@ -35,19 +36,25 @@ MoveController moveController(2);
  * if not, send 404
  */
 void action(){
-  Serial.print("start action arg: ");
- 
-    if((server.hasArg(steps)) && (server.hasArg(actionId))){
-      Serial.println("start mooving");
+  //TO DO add getting json
+  Serial.println("start action arg: ");
+  Serial.println(server.args());
+    if(server.args() > 0 ){
+      StaticJsonBuffer<50> jsonBuffer;
+      JsonObject& root = jsonBuffer.parseObject(server.arg(1));
+      if (root.success()) {
+   
+      Serial.println("start moving");
       server.send(200,  "text/plain", "Do some steps");
-      int recivedSteps = server.arg(steps).toInt();
-      int recivedActionId = server.arg(actionId).toInt();
+      int recivedSteps = root[steps].as<int>();
+      int recivedActionId = root[actionId].as<int>();
       for(int i = 0; i < recivedSteps; i++){
       moveController.step(recivedActionId);
       }
+      Serial.println("end moving");
       return;
-    } 
-
+     } 
+    }
 server.send(404, "text/plain", "can't read data from JSON");
 }
 

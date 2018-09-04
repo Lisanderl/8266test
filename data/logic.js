@@ -20,17 +20,17 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     document.getElementById("back").onclick = function() {
-        sendAction(this.id, getSteps(), 1);
+        sendAction(this.id, getSteps(), 2);
         console.log('clicked ' + this.id);
     };
 
     document.getElementById("left").onclick = function() {
-        sendAction(this.id, getSteps(), 1);
+        sendAction(this.id, getSteps(), 3);
         console.log('clicked ' + this.id);
     };
 
     document.getElementById("right").onclick = function() {
-        sendAction(this.id, getSteps(), 1);
+        sendAction(this.id, getSteps(), 4);
         console.log('clicked ' + this.id);
     };
 

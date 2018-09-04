@@ -2,9 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="vanilla.js"></script>
-    <link rel="stylesheet" href="spectre.min.css">
-    <link rel="stylesheet" href="spectre-exp.min.css">
-    <link rel="stylesheet" href="spectre-icons.min.css">
+	 <link rel="stylesheet" href="bootstrap.min.css">
      <link rel="stylesheet" href="style.my.css">
     <script type="application/javascript" src="logic.js"> </script>
 	
@@ -13,16 +11,17 @@
  <div id='controls' class="centered">
 
     <div id="slider-wrapper">
-       <input id="steps" class="slider tooltip" type="range" min="0" max="10" value="2" oninput="this.setAttribute('value', this.value);">
+       <input id="steps" class="border-0" type="range" min="0" max="10" value="2" oninput="this.setAttribute('value', this.value);"/>
     </div>
 
-     <div id="button-wrapper">
-  <button class="btn" id='straight'><i class="icon icon-arrow-up"></i></button>
-  <button  class="btn" id='back'><i class="icon icon-arrow-down"></i></button>
-
-  <button class="btn" id='left'> <i class="icon icon-arrow-left"></i> </button>
-  <button class="btn" id='right'> <i class="icon icon-arrow-right"></i> </button>
-     </div>
+      <div class="btn-group">
+      <button class="btn btn-dark btn-lg">1111</button>
+      <button class="btn btn-dark btn-lg">2222</button>
+      <button class="btn btn-dark btn-lg">3333</button>
+	  <button class="btn btn-dark btn-lg">4444</button>
+    </div>
+	 
+	 
  </div>
 </body>
 </html>
