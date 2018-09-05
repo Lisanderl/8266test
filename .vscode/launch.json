@@ -12,8 +12,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "/home/lisanderl/Documents/PlatformIO/Projects/BimoSpider/.pioenvs/esp12e_linux/firmware.elf",
-            "toolchainBinDir": "/home/lisanderl/.platformio/packages/toolchain-xtensa/bin",
+            "executable": "c:/Users/oshevchuk/Documents/PlatformIO/Projects/8266test/.pioenvs/esp12e_linux/firmware.elf",
+            "toolchainBinDir": "",
             "preLaunchTask": {
                 "type": "PlatformIO",
                 "task": "Pre-Debug"
@@ -24,8 +24,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (Skip Pre-Debug)",
-            "executable": "/home/lisanderl/Documents/PlatformIO/Projects/BimoSpider/.pioenvs/esp12e_linux/firmware.elf",
-            "toolchainBinDir": "/home/lisanderl/.platformio/packages/toolchain-xtensa/bin",
+            "executable": "c:/Users/oshevchuk/Documents/PlatformIO/Projects/8266test/.pioenvs/esp12e_linux/firmware.elf",
+            "toolchainBinDir": "",
             "internalConsoleOptions": "openOnSessionStart"
         }
     ]
