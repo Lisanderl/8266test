@@ -143,16 +143,24 @@ void setup() {
 }
 
 void loop() {
-
-   server.handleClient();
-// simplePad1.smartHorisontalMove(40);
-//  delay(2000);
-// simplePad1.horisontalMove(-60);
-//  delay(5000);
-// simplePad2.smartHorisontalMove(35);
-//  delay(2000);
-// simplePad2.horisontalMove(-55);
-
+  delay(2000);
+   //server.handleClient();
+  Serial.println("Horisontal");
+ simplePad1.horisontalMove(-40);
+ delay(1000);
+ simplePad1.horisontalMove(40);
+ delay(2000);
+   Serial.println("Vertical");
+ simplePad1.verticalMove(-40);
+ delay(1000);
+ simplePad1.verticalMove(40);
+ delay(2000);
+   Serial.println("Smart");
+ simplePad1.smartHorisontalMove(-40);
+ delay(1000);
+ simplePad1.smartHorisontalMove(40);
+ delay(2000);
+   Serial.println("End");
 }
 
 
