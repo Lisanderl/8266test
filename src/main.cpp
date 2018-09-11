@@ -157,22 +157,7 @@ void setup() {
 void loop() {
 
    //server.handleClient();
-//   Serial.println("Horisontal");
-//  simplePad1->horisontalMove(-40);
-//  delay(1000);
-//  simplePad1->horisontalMove(40);
-//  delay(2000);
-//    Serial.println("Vertical");
-//  simplePad1->verticalMove(-40);
-//  delay(1000);
-//  simplePad1->verticalMove(40);
-//  delay(2000);
-//    Serial.println("Smart");
-//  simplePad1->smartHorisontalMove(-40);
-//  delay(1000);
-//  simplePad1->smartHorisontalMove(40);
-//  delay(2000);
-//    Serial.println("End");
+
 delay(2000);
 pads.at(0)->verticalMove(-50);
 pads.at(0)->horisontalMove(-50);
@@ -182,6 +167,16 @@ pads.at(0)->horisontalMove(50);
 //moveController->defaultPosition(true);
 Serial.println("End");
 delay(2000);
+for(auto pad : pads){
+  pad->horisontalMove(-40);
+  delay(500);
+  pad->horisontalMove(40);
+  delay(500);
+  pad->verticalMove(-40);
+  delay(500);
+  pad->verticalMove(40);
+  delay(500);
+}
 }
 
 

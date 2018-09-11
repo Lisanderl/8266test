@@ -7,27 +7,27 @@ MoveController::MoveController(std::vector<Pad*> &_pads){
 
 // does horizontal move for all _pads, with vertical move
 void MoveController::smartLeftRotation(int val){
-for(unsigned int i = 0; i < _pads->size(); i=i+2){
+for(unsigned int i = 0; i < _pads->size(); i += 2){
   _pads->at(i)->smartHorisontalMove(val);
  }
 }
 
 // does horizontal move for all _pads, with vertical move
 void MoveController::smartRightRotation(int val){
-for(unsigned int i = 1; i < _pads->size(); i=i+2){
+for(unsigned int i = 1; i < _pads->size(); i += 2){
   _pads->at(i)->smartHorisontalMove(val);
  }
 }
 
 // does horizontal move for all _pads, without vertical move
 void MoveController::crawlLeftRotation(int val){
-for(unsigned int i = 0; i < _pads->size(); i=i+2){
+for(unsigned int i = 0; i < _pads->size(); i += 2){
   _pads->at(i)->horisontalMove(val);
  }
 }
 
 void MoveController::crawlRightRotation(int val){
-for(unsigned int i = 1; i < _pads->size(); i=i+2){
+for(unsigned int i = 1; i < _pads->size(); i += 2){
   _pads->at(i)->horisontalMove(val);
  }
 }
