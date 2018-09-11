@@ -86,16 +86,17 @@
                 ]
             },
             "defines": [
-                "F_CPU=80000000L",
-                "__ets__",
-                "ICACHE_FLASH",
                 "PLATFORMIO=30601",
                 "ESP8266",
                 "ARDUINO_ARCH_ESP8266",
                 "ARDUINO_ESP8266_ESP12",
+                "F_CPU=80000000L",
+                "__ets__",
+                "ICACHE_FLASH",
                 "ARDUINO=10805",
                 "ARDUINO_BOARD=\"PLATFORMIO_ESP12E\"",
                 "LWIP_OPEN_SRC",
+                "VTABLES_IN_FLASH",
                 ""
             ],
             "intelliSenseMode": "clang-x64",

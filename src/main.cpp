@@ -149,8 +149,8 @@ void setup() {
    pwmController.init(B000000);       
    pwmController.setPWMFrequency(50);
 
-   pads.push_back(Pad::makePad(pwmController, leftServoEvaluator, 1, 2));
-   pads.push_back(Pad::makePad(pwmController, rightServoEvaluator, 3, 4));
+   pads.push_back(Pad::makePad(pwmController, leftServoEvaluator, 0, 1));
+   //pads.push_back(Pad::makePad(pwmController, rightServoEvaluator, 2, 3));
    moveController = new MoveController(pads);
 }
 
@@ -159,11 +159,11 @@ void loop() {
    //server.handleClient();
 
 delay(2000);
-pads.at(0)->verticalMove(-50);
-pads.at(0)->horisontalMove(-50);
-delay(2000);
-pads.at(0)->verticalMove(50);
-pads.at(0)->horisontalMove(50);
+// pads.at(0)->verticalMove(-50);
+// pads.at(0)->horisontalMove(-50);
+// delay(2000);
+// pads.at(0)->verticalMove(50);
+// pads.at(0)->horisontalMove(50);
 //moveController->defaultPosition(true);
 Serial.println("End");
 delay(2000);
