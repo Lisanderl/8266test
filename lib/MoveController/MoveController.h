@@ -1,11 +1,6 @@
 #ifndef MoveController_H
 #define MoveController_H
 
-
-    int const  MAX_VAL = 507;
-    int const  AVARAGE_VAL = 302;
-    int const  LOW_VAL = 97;
-
     int const FULL_POSITION = 90;
     int const DEFAULT_POSITION = 0;
     int const LOW_POSITION = -90;
@@ -22,7 +17,7 @@ public:
 
 enum Direction {STRAIGHT = 1, BACK = 2, LEFT = 3, RIGHT = 4, LEFT_TURN = 5, RIGHT_TURN = 6};
 
-MoveController(int pawPairs);
+MoveController(std::vector<Pad*> &pads);
 
 void defaultPosition(boolean witVertical);
 void frontPosition(boolean witVertical);
@@ -37,11 +32,7 @@ void smartRightRotation(int val);
 void crawlLeftRotation(int val);
 void crawlRightRotation(int val);
 
-PCA9685 *pwmController;
-PCA9685_ServoEvaluator *leftServoEvaluator = nullptr;
-PCA9685_ServoEvaluator *rightServoEvaluator = nullptr;
-PCA9685_ServoEvaluator *verticalServoEvaluator = nullptr;
-std::vector<Pad*> pads;
+std::vector<Pad*> *_pads;
 
 };
 #endif

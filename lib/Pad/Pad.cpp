@@ -5,6 +5,10 @@ Pad::Pad(PCA9685& servoController, PCA9685_ServoEvaluator& servoEvaluator, int v
 
 }
 
+Pad *Pad::makePad(PCA9685& servoController, PCA9685_ServoEvaluator& servoEvaluator, int verticalServo, int horizontalServo){
+ return new Pad(servoController, servoEvaluator, verticalServo, horizontalServo);
+}
+
 void Pad::horisontalMove(int val){
      _servoController->setChannelPWM(_horizontalServo, _servoEvaluator->pwmForAngle(val));
 }

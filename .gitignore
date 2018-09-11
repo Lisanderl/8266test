@@ -8,8 +8,11 @@ tomcat
 # Default excludes
 #
 
+.vscode
+.pioenvs
 
-
+.vscode/
+.pioenvs/
 <<<<<<< HEAD
 # Binaries
 =======

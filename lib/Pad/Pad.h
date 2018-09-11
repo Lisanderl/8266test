@@ -12,6 +12,7 @@ class Pad {
     public:
     Pad(PCA9685& servoController, PCA9685_ServoEvaluator& servoEvaluator, int verticalServo, int horizontalServo);
 
+    static Pad *makePad(PCA9685& servoController, PCA9685_ServoEvaluator& servoEvaluator, int verticalServo, int horizontalServo);
     void verticalMove(int val);
     void horisontalMove(int val);
     void smartHorisontalMove(int val);
@@ -24,8 +25,8 @@ class Pad {
 
     int _verticalServo;
     int _horizontalServo;
-    PCA9685 *_servoController;
-    PCA9685_ServoEvaluator *_servoEvaluator;
+    PCA9685* _servoController;
+    PCA9685_ServoEvaluator* _servoEvaluator;
 
 
 };

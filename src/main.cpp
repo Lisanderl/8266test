@@ -11,6 +11,11 @@
 #include "Pad.h"
 #include "MoveController.h"
 
+
+    int const  MAX_VAL = 507;
+    int const  AVARAGE_VAL = 302;
+    int const  LOW_VAL = 97;
+
 String const name = "name";
 String const steps = "steps";
 String const actionId = "actionId";
@@ -23,13 +28,16 @@ IPAddress myIP;
 
 
 PCA9685 pwmController;
-// default 102 307 512
-PCA9685_ServoEvaluator pwmServo1(97, 302, 507);
+// // default 102 307 512
+PCA9685_ServoEvaluator leftServoEvaluator(LOW_VAL, AVARAGE_VAL, MAX_VAL);
+PCA9685_ServoEvaluator rightServoEvaluator(MAX_VAL, AVARAGE_VAL, LOW_VAL);
+std::vector<Pad*> pads;
+ 
 
-Pad simplePad1(pwmController, pwmServo1, 0, 1);
-Pad simplePad2(pwmController, pwmServo1, 2, 3);
+// Pad* simplePad1 = Pad::makePad(pwmController, pwmServo1, 0, 1);
+// Pad* simplePad2 = Pad::makePad(pwmController, pwmServo1, 2, 3);
 
-MoveController moveController(2);
+MoveController *moveController;
 
 /**
  * if data are correct, do action and send status 200
@@ -49,7 +57,7 @@ void action(){
       int recivedSteps = root[steps].as<int>();
       int recivedActionId = root[actionId].as<int>();
       for(int i = 0; i < recivedSteps; i++){
-      moveController.step(recivedActionId);
+      //moveController.step(recivedActionId);
       }
       Serial.println("end moving");
       return;
@@ -140,19 +148,40 @@ void setup() {
    pwmController.resetDevices();      
    pwmController.init(B000000);       
    pwmController.setPWMFrequency(50);
+
+   pads.push_back(Pad::makePad(pwmController, leftServoEvaluator, 1, 2));
+   pads.push_back(Pad::makePad(pwmController, rightServoEvaluator, 3, 4));
+   moveController = new MoveController(pads);
 }
 
 void loop() {
 
-   server.handleClient();
-// simplePad1.smartHorisontalMove(40);
+   //server.handleClient();
+//   Serial.println("Horisontal");
+//  simplePad1->horisontalMove(-40);
+//  delay(1000);
+//  simplePad1->horisontalMove(40);
 //  delay(2000);
-// simplePad1.horisontalMove(-60);
-//  delay(5000);
-// simplePad2.smartHorisontalMove(35);
+//    Serial.println("Vertical");
+//  simplePad1->verticalMove(-40);
+//  delay(1000);
+//  simplePad1->verticalMove(40);
 //  delay(2000);
-// simplePad2.horisontalMove(-55);
-
+//    Serial.println("Smart");
+//  simplePad1->smartHorisontalMove(-40);
+//  delay(1000);
+//  simplePad1->smartHorisontalMove(40);
+//  delay(2000);
+//    Serial.println("End");
+delay(2000);
+pads.at(0)->verticalMove(-50);
+pads.at(0)->horisontalMove(-50);
+delay(2000);
+pads.at(0)->verticalMove(50);
+pads.at(0)->horisontalMove(50);
+//moveController->defaultPosition(true);
+Serial.println("End");
+delay(2000);
 }
 
 
