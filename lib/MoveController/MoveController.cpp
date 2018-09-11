@@ -1,34 +1,38 @@
 #include <MoveController.h>
 
-MoveController::MoveController(std::vector<Pad*> &_pads){
- 
+MoveController::MoveController(PCA9685& servoController, int pairs){
+ //_servoController = &servoController;
+for(int i = 0; i < pairs; i++){
+    
+   //pads.push_back(Pad::makePad(_servoController, leftServoEvaluator, i, i+1));
+}
 
 }
 
 // does horizontal move for all _pads, with vertical move
 void MoveController::smartLeftRotation(int val){
-for(unsigned int i = 0; i < _pads->size(); i += 2){
-  _pads->at(i)->smartHorisontalMove(val);
+for(unsigned int i = 0; i < pads.size(); i += 2){
+  pads.at(i)->smartHorisontalMove(val);
  }
 }
 
 // does horizontal move for all _pads, with vertical move
 void MoveController::smartRightRotation(int val){
-for(unsigned int i = 1; i < _pads->size(); i += 2){
-  _pads->at(i)->smartHorisontalMove(val);
+for(unsigned int i = 1; i < pads.size(); i += 2){
+  pads.at(i)->smartHorisontalMove(val);
  }
 }
 
 // does horizontal move for all _pads, without vertical move
 void MoveController::crawlLeftRotation(int val){
-for(unsigned int i = 0; i < _pads->size(); i += 2){
-  _pads->at(i)->horisontalMove(val);
+for(unsigned int i = 0; i < pads.size(); i += 2){
+  pads.at(i)->horisontalMove(val);
  }
 }
 
 void MoveController::crawlRightRotation(int val){
-for(unsigned int i = 1; i < _pads->size(); i += 2){
-  _pads->at(i)->horisontalMove(val);
+for(unsigned int i = 1; i < pads.size(); i += 2){
+  pads.at(i)->horisontalMove(val);
  }
 }
 

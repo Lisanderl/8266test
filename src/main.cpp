@@ -37,7 +37,6 @@ std::vector<Pad*> pads;
 // Pad* simplePad1 = Pad::makePad(pwmController, pwmServo1, 0, 1);
 // Pad* simplePad2 = Pad::makePad(pwmController, pwmServo1, 2, 3);
 
-MoveController *moveController;
 
 /**
  * if data are correct, do action and send status 200
@@ -151,7 +150,7 @@ void setup() {
 
    pads.push_back(Pad::makePad(pwmController, leftServoEvaluator, 0, 1));
    //pads.push_back(Pad::makePad(pwmController, rightServoEvaluator, 2, 3));
-   moveController = new MoveController(pads);
+   
 }
 
 void loop() {
