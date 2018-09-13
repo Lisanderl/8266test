@@ -1,12 +1,18 @@
 #include <MoveController.h>
 
-MoveController::MoveController(PCA9685& servoController, int pairs){
- //_servoController = &servoController;
+MoveController::MoveController(PCA9685 &servoController, PCA9685_ServoEvaluator& leftServoEvaluator,
+                             PCA9685_ServoEvaluator& rightServoEvaluator, int pairs)
+ : _servoController(servoController),
+  _leftServoEvaluator(leftServoEvaluator),
+   _rightServoEvaluator(rightServoEvaluator)
+ {
+int correction = 0;
 for(int i = 0; i < pairs; i++){
     
-   //pads.push_back(Pad::makePad(_servoController, leftServoEvaluator, i, i+1));
-}
-
+   pads.push_back(Pad::makePad(_servoController, _leftServoEvaluator, _leftServoEvaluator, i + correction, 1 + i + correction));
+   pads.push_back(Pad::makePad(_servoController, _rightServoEvaluator, _leftServoEvaluator, 2+i+correction, 3 + i + correction));
+   correction += 3;
+ }
 }
 
 // does horizontal move for all _pads, with vertical move
@@ -31,9 +37,9 @@ for(unsigned int i = 0; i < pads.size(); i += 2){
 }
 
 void MoveController::crawlRightRotation(int val){
-for(unsigned int i = 1; i < pads.size(); i += 2){
-  pads.at(i)->horisontalMove(val);
- }
+  for(unsigned int i = 1; i < pads.size(); i += 2){
+    pads.at(i)->horisontalMove(val);
+  }
 }
 
 
