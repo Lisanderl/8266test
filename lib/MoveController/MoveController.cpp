@@ -46,6 +46,7 @@ void MoveController::crawlRightRotation(int val){
 void MoveController::defaultPosition(boolean witVertical){
  witVertical ? smartLeftRotation(DEFAULT_POSITION) : crawlLeftRotation(DEFAULT_POSITION);
  witVertical ? smartRightRotation(DEFAULT_POSITION) : crawlRightRotation(DEFAULT_POSITION);
+ Serial.println("default controller");
 }
 
 void MoveController::frontPosition(boolean witVertical){

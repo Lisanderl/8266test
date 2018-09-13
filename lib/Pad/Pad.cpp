@@ -13,8 +13,9 @@ Pad *Pad::makePad(PCA9685& servoController, PCA9685_ServoEvaluator& servoEvaluat
 }
 
 void Pad::horisontalMove(int val){
-
+       
      _servoController->setChannelPWM(_horizontalServo, _servoEvaluator->pwmForAngle(val));
+      Serial.println("Vertical pad");
 }
 
 void Pad::smartHorisontalMove(int val){

@@ -31,9 +31,8 @@ PCA9685 pwmController;
 // // default 102 307 512
 PCA9685_ServoEvaluator leftServoEvaluator(LOW_VAL, AVARAGE_VAL, MAX_VAL);
 PCA9685_ServoEvaluator rightServoEvaluator(MAX_VAL, AVARAGE_VAL, LOW_VAL);
-std::vector<Pad*> pads;
 
- MoveController moveController(pwmController, leftServoEvaluator, rightServoEvaluator, 2);
+ MoveController *moveController;
 
 // Pad* simplePad1 = Pad::makePad(pwmController, pwmServo1, 0, 1);
 // Pad* simplePad2 = Pad::makePad(pwmController, pwmServo1, 2, 3);
@@ -149,17 +148,22 @@ void setup() {
    pwmController.init(B000000);       
    pwmController.setPWMFrequency(50);
 
-   
+   //nana = Pad::makePad(pwmController, leftServoEvaluator, leftServoEvaluator, 0, 1 );
+   moveController = new MoveController(pwmController, leftServoEvaluator, rightServoEvaluator, 2);
 }
 
 void loop() {
   
 Serial.println("End");
 delay(2000);
-moveController.defaultPosition(true);
+// nana->horisontalMove(40);
+// nana->verticalMove(40);
+moveController->defaultPosition(true);
 Serial.println("End");
-moveController.backPosition(true);
+moveController->backPosition(true);
 delay(2000);
+// nana->horisontalMove(-40);
+// nana->verticalMove(-40);
 
 }
 
