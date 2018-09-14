@@ -7,7 +7,7 @@
 #include <ArduinoJson.h> 
 
 #include <Wire.h>
-#include "PCA9685.h"
+#include <PCA9685.h>
 #include "Pad.h"
 #include "MoveController.h"
 
@@ -31,13 +31,7 @@ PCA9685 pwmController;
 // // default 102 307 512
 PCA9685_ServoEvaluator leftServoEvaluator(LOW_VAL, AVARAGE_VAL, MAX_VAL);
 PCA9685_ServoEvaluator rightServoEvaluator(MAX_VAL, AVARAGE_VAL, LOW_VAL);
-
- MoveController *moveController;
-
-// Pad* simplePad1 = Pad::makePad(pwmController, pwmServo1, 0, 1);
-// Pad* simplePad2 = Pad::makePad(pwmController, pwmServo1, 2, 3);
-
-
+MoveController *moveController;
 /**
  * if data are correct, do action and send status 200
  * if not, send 404
@@ -131,7 +125,6 @@ void restConfig(){
 
 
 void setup() {
-
   Serial.begin(115200);
   delay(1000);
   WiFi.mode(WIFI_AP);           //Only Access point

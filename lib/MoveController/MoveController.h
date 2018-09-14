@@ -1,17 +1,13 @@
 #ifndef MoveController_H
 #define MoveController_H
 
-    int const  MAX_VALl = 507;
-    int const  AVARAGE_VALl = 302;
-    int const  LOW_VALl = 97;
-
     int const FULL_POSITION = 80;
     int const DEFAULT_POSITION = 0;
     int const LOW_POSITION = -80;
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include <Arduino.h>
-#include "PCA9685.h"
+#include <PCA9685.h>
 #include "Pad.h"
 #endif
 

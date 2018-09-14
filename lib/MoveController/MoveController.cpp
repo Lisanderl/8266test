@@ -8,9 +8,9 @@ MoveController::MoveController(PCA9685 &servoController, PCA9685_ServoEvaluator&
  {
 int correction = 0;
 for(int i = 0; i < pairs; i++){
-    
-   pads.push_back(Pad::makePad(_servoController, _leftServoEvaluator, _leftServoEvaluator, i + correction, 1 + i + correction));
-   pads.push_back(Pad::makePad(_servoController, _rightServoEvaluator, _leftServoEvaluator, 2+i+correction, 3 + i + correction));
+   int val = correction + 1; 
+   pads.push_back(Pad::makePad(_servoController, _leftServoEvaluator, _leftServoEvaluator, val, 1 + val));
+   pads.push_back(Pad::makePad(_servoController, _rightServoEvaluator, _leftServoEvaluator, 2 + val, 3 + val));
    correction += 3;
  }
 }
