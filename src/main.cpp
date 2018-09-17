@@ -8,13 +8,14 @@
 
 #include <Wire.h>
 #include <PCA9685.h>
-#include "Pad.h"
-#include "MoveController.h"
+#include <PadSettings.h>
+// #include "Pad.h"
+// #include "MoveController.h"
 
 
-    int const  MAX_VAL = 507;
-    int const  AVARAGE_VAL = 302;
-    int const  LOW_VAL = 97;
+    // int const  MAX_VAL = 507;
+    // int const  AVARAGE_VAL = 302;
+    // int const  LOW_VAL = 97;
 
 String const name = "name";
 String const steps = "steps";
@@ -27,11 +28,12 @@ ESP8266WebServer server(85);
 IPAddress myIP;
 
 
-PCA9685 pwmController;
-// // default 102 307 512
-PCA9685_ServoEvaluator leftServoEvaluator(LOW_VAL, AVARAGE_VAL, MAX_VAL);
-PCA9685_ServoEvaluator rightServoEvaluator(MAX_VAL, AVARAGE_VAL, LOW_VAL);
-MoveController *moveController;
+// PCA9685 pwmController;
+// // // default 102 307 512
+PCA9685_ServoEvaluator leftServoEvaluator(97, 302, 507);
+// PCA9685_ServoEvaluator rightServoEvaluator(MAX_VAL, AVARAGE_VAL, LOW_VAL);
+// MoveController *moveController;
+// Pad *nana;
 /**
  * if data are correct, do action and send status 200
  * if not, send 404
@@ -137,26 +139,22 @@ void setup() {
    Wire.begin(2, 14);
    Wire.setClock(400000);
    delay(1000);
-   pwmController.resetDevices();      
-   pwmController.init(B000000);       
-   pwmController.setPWMFrequency(50);
+  //  pwmController.resetDevices();      
+  //  pwmController.init(B000000);       
+  //  pwmController.setPWMFrequency(50);
 
-   //nana = Pad::makePad(pwmController, leftServoEvaluator, leftServoEvaluator, 0, 1 );
-   moveController = new MoveController(pwmController, leftServoEvaluator, rightServoEvaluator, 2);
+  //  nana = Pad::makePad(pwmController, rightServoEvaluator, leftServoEvaluator, 2, 3 );
+   //moveController = new MoveController(pwmController, leftServoEvaluator, rightServoEvaluator, 2);
 }
 
 void loop() {
   
 Serial.println("End");
-delay(2000);
-// nana->horisontalMove(40);
-// nana->verticalMove(40);
-moveController->defaultPosition(true);
-Serial.println("End");
-moveController->backPosition(true);
-delay(2000);
-// nana->horisontalMove(-40);
-// nana->verticalMove(-40);
+delay(4000);
+Serial.println("values :");
+Serial.println(leftServoEvaluator.pwmForAngle(-40));
+Serial.println(leftServoEvaluator.pwmForAngle(0));
+Serial.println(leftServoEvaluator.pwmForAngle(40));
 
 }
 

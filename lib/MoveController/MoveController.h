@@ -9,6 +9,7 @@
 #include <Arduino.h>
 #include <PCA9685.h>
 #include "Pad.h"
+#include "Pad.h"
 #endif
 
 class MoveController {

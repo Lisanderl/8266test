@@ -3,14 +3,15 @@
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include <Arduino.h>
-#include "PCA9685.h"
+#include <PCA9685.h>
+#include  <PadSettings.h>
 #endif
 
 
 class Pad {
     
     public:
-    static Pad *makePad(PCA9685& servoController, PCA9685_ServoEvaluator& servoEvaluator, PCA9685_ServoEvaluator& defServoEvaluator, 
+    static Pad *makePad(PCA9685& servoController, PadSettings& servoEvaluator, PadSettings& defServoEvaluator, 
                         int verticalServo, int horizontalServo);
     void verticalMove(int val);
     void horisontalMove(int val);
@@ -26,7 +27,7 @@ class Pad {
     int _verticalServo;
     int _horizontalServo;
     PCA9685* _servoController;
-    PCA9685_ServoEvaluator* _servoEvaluator;
-    PCA9685_ServoEvaluator* _defServoEvaluator;
+    PadSettings* _servoEvaluator;
+    PadSettings* _defServoEvaluator;
 };
 #endif 

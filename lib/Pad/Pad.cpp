@@ -1,12 +1,12 @@
 #include <Pad.h>
 
-Pad::Pad(PCA9685& servoController, PCA9685_ServoEvaluator& servoEvaluator, PCA9685_ServoEvaluator& defServoEvaluator, 
+Pad::Pad(PCA9685& servoController, PadSettings& servoEvaluator, PadSettings& defServoEvaluator, 
             int verticalServo, int horizontalServo){
     _servoController = &servoController, _servoEvaluator = &servoEvaluator, _defServoEvaluator = &defServoEvaluator,
      _verticalServo = verticalServo, _horizontalServo = horizontalServo;
 }
 
-Pad *Pad::makePad(PCA9685& servoController, PCA9685_ServoEvaluator& servoEvaluator, PCA9685_ServoEvaluator& defServoEvaluator, 
+Pad *Pad::makePad(PCA9685& servoController, PadSettings& servoEvaluator, PadSettings& defServoEvaluator, 
                         int verticalServo, int horizontalServo){
  
  return new Pad(servoController, servoEvaluator, defServoEvaluator, verticalServo, horizontalServo);
