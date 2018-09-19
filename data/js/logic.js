@@ -1,17 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
-	
+
+    document.getElementById("steps").oninput = function() {
+        document.getElementById("outputId").value = getSteps();
+    }
 
   function getSteps() {
       return  document.getElementById("steps").value;
-  }
+  };
 
     function sendAction( name, steps, actionId ) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/action');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({"name": name, "steps": steps, "actionId": actionId}));
-
-    }
+    };
 
     //logic for buttons on UI
     document.getElementById("straight").onclick = function() {
