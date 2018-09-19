@@ -1,12 +1,12 @@
 #include <Pad.h>
 
-Pad::Pad(PCA9685& servoController, PadSettings& servoEvaluator, PadSettings& defServoEvaluator, 
+Pad::Pad(PCA9685& servoController, AngleSettings& servoEvaluator, AngleSettings& defServoEvaluator, 
             int verticalServo, int horizontalServo){
     _servoController = &servoController, _servoEvaluator = &servoEvaluator, _defServoEvaluator = &defServoEvaluator,
      _verticalServo = verticalServo, _horizontalServo = horizontalServo;
 }
 
-Pad *Pad::makePad(PCA9685& servoController, PadSettings& servoEvaluator, PadSettings& defServoEvaluator, 
+Pad *Pad::makePad(PCA9685& servoController, AngleSettings& servoEvaluator, AngleSettings& defServoEvaluator, 
                         int verticalServo, int horizontalServo){
  
  return new Pad(servoController, servoEvaluator, defServoEvaluator, verticalServo, horizontalServo);
@@ -14,7 +14,7 @@ Pad *Pad::makePad(PCA9685& servoController, PadSettings& servoEvaluator, PadSett
 
 void Pad::horisontalMove(int val){
        
-     _servoController->setChannelPWM(_horizontalServo, _servoEvaluator->pwmForAngle(val));
+     _servoController->setChannelPWM(_horizontalServo, _servoEvaluator->angle180ToValue(val));
 }
 
 void Pad::smartHorisontalMove(int val){
@@ -28,5 +28,5 @@ void Pad::smartHorisontalMove(int val){
 
 void Pad::verticalMove(int val){
 
-     _servoController->setChannelPWM(_verticalServo, _defServoEvaluator->pwmForAngle(val));
+     _servoController->setChannelPWM(_verticalServo, _defServoEvaluator->angle180ToValue(val));
 }

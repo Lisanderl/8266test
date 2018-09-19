@@ -1,10 +1,6 @@
 #ifndef MoveController_H
 #define MoveController_H
 
-    int const FULL_POSITION = 80;
-    int const DEFAULT_POSITION = 0;
-    int const LOW_POSITION = -80;
-
 #if defined(ARDUINO) && ARDUINO >= 100
 #include <Arduino.h>
 #include <PCA9685.h>
@@ -18,8 +14,8 @@ public:
 
 enum Direction {STRAIGHT = 1, BACK = 2, LEFT = 3, RIGHT = 4, LEFT_TURN = 5, RIGHT_TURN = 6};
 
-MoveController(PCA9685 &servoController, PCA9685_ServoEvaluator& leftServoEvaluator,
-                             PCA9685_ServoEvaluator& rightServoEvaluator, int pairs);
+MoveController(PCA9685 &servoController, AngleSettings& leftServo,
+                             AngleSettings& rightServo, int pairs);
 
 void defaultPosition(boolean witVertical);
 void frontPosition(boolean witVertical);
@@ -34,9 +30,13 @@ void smartRightRotation(int val);
 void crawlLeftRotation(int val);
 void crawlRightRotation(int val);
 
+    double const FULL_POSITION = 175.0;
+    double const DEFAULT_POSITION = 88.0;
+    double const LOW_POSITION = 5.0;
+
 std::vector<Pad*> pads;
 PCA9685 _servoController;
-PCA9685_ServoEvaluator _leftServoEvaluator;
-PCA9685_ServoEvaluator _rightServoEvaluator;
+AngleSettings _leftServo;
+AngleSettings _rightServo;
 };
 #endif

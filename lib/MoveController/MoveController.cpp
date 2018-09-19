@@ -1,16 +1,16 @@
 #include <MoveController.h>
 
-MoveController::MoveController(PCA9685 &servoController, PCA9685_ServoEvaluator& leftServoEvaluator,
-                             PCA9685_ServoEvaluator& rightServoEvaluator, int pairs)
+MoveController::MoveController(PCA9685 &servoController, AngleSettings& leftServo,
+                             AngleSettings& rightServo, int pairs)
  : _servoController(servoController),
-  _leftServoEvaluator(leftServoEvaluator),
-   _rightServoEvaluator(rightServoEvaluator)
+  _leftServo(leftServo),
+   _rightServo(rightServo)
  {
 int correction = 0;
 for(int i = 0; i < pairs; i++){
     
-   pads.push_back(Pad::makePad(_servoController, _leftServoEvaluator, _leftServoEvaluator, i + correction, 1 + i + correction));
-   pads.push_back(Pad::makePad(_servoController, _rightServoEvaluator, _leftServoEvaluator, 2+i+correction, 3 + i + correction));
+   pads.push_back(Pad::makePad(_servoController, _leftServo, _leftServo, i + correction, 1 + i + correction));
+   pads.push_back(Pad::makePad(_servoController, _rightServo, _leftServo, 2+i+correction, 3 + i + correction));
    correction += 3;
  }
 }

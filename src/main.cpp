@@ -8,9 +8,9 @@
 
 #include <Wire.h>
 #include <PCA9685.h>
-#include <PadSettings.h>
-// #include "Pad.h"
-// #include "MoveController.h"
+#include <AngleSettings.h>
+ #include "Pad.h"
+#include "MoveController.h"
 
 
     // int const  MAX_VAL = 507;
@@ -26,14 +26,12 @@ const char* ssid = "Lisanderl";
 const char* password = "12345ASD";
 ESP8266WebServer server(85);
 IPAddress myIP;
+AngleSettings leftServo (97, 507);
+AngleSettings rightServo (507, 97);
 
+PCA9685 pwmController;
+MoveController *moveController;
 
-// PCA9685 pwmController;
-// // // default 102 307 512
-PCA9685_ServoEvaluator leftServoEvaluator(97, 302, 507);
-// PCA9685_ServoEvaluator rightServoEvaluator(MAX_VAL, AVARAGE_VAL, LOW_VAL);
-// MoveController *moveController;
-// Pad *nana;
 /**
  * if data are correct, do action and send status 200
  * if not, send 404
@@ -139,23 +137,27 @@ void setup() {
    Wire.begin(2, 14);
    Wire.setClock(400000);
    delay(1000);
-  //  pwmController.resetDevices();      
-  //  pwmController.init(B000000);       
-  //  pwmController.setPWMFrequency(50);
+   pwmController.resetDevices();      
+   pwmController.init(B000000);       
+   pwmController.setPWMFrequency(50);
 
   //  nana = Pad::makePad(pwmController, rightServoEvaluator, leftServoEvaluator, 2, 3 );
-   //moveController = new MoveController(pwmController, leftServoEvaluator, rightServoEvaluator, 2);
+   moveController = new MoveController(pwmController, leftServo, rightServo, 2);
 }
 
 void loop() {
   
-Serial.println("End");
 delay(4000);
-Serial.println("values :");
-Serial.println(leftServoEvaluator.pwmForAngle(-40));
-Serial.println(leftServoEvaluator.pwmForAngle(0));
-Serial.println(leftServoEvaluator.pwmForAngle(40));
-
+Serial.println("Start :");
+moveController->frontPosition(false);
+Serial.println("Front :");
+delay(1400);
+moveController->defaultPosition(false);
+Serial.println("Def :");
+delay(1400);
+moveController->backPosition(false);
+Serial.println("Back :");
+delay(1400);
 }
 
 
