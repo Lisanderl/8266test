@@ -12,7 +12,6 @@
  #include "Pad.h"
 #include "MoveController.h"
 
-
     // int const  MAX_VAL = 507;
     // int const  AVARAGE_VAL = 302;
     // int const  LOW_VAL = 97;
@@ -23,7 +22,7 @@ String const actionId = "actionId";
 
 //WIFI CONFIG
 const char* ssid = "Lisanderl";
-const char* password = "12345ASD";
+const char* password = "123qwerty";
 ESP8266WebServer server(85);
 IPAddress myIP;
 AngleSettings leftServo (97, 507);
@@ -50,7 +49,7 @@ void action(){
       int recivedSteps = root[steps].as<int>();
       int recivedActionId = root[actionId].as<int>();
       for(int i = 0; i < recivedSteps; i++){
-      //moveController.step(recivedActionId);
+       moveController->step(recivedActionId);
       }
       Serial.println("end moving");
       return;
@@ -58,8 +57,6 @@ void action(){
     }
 server.send(404, "text/plain", "can't read data from JSON");
 }
-
-
 /**
  * load 
  */
@@ -146,18 +143,8 @@ void setup() {
 }
 
 void loop() {
-  
-delay(4000);
-Serial.println("Start :");
-moveController->frontPosition(false);
-Serial.println("Front :");
-delay(1400);
-moveController->defaultPosition(false);
-Serial.println("Def :");
-delay(1400);
-moveController->backPosition(false);
-Serial.println("Back :");
-delay(1400);
+  server.handleClient();
+
 }
 
 

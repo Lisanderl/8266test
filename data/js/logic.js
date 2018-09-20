@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //logic for buttons on UI
     document.getElementById("straight").onclick = function() {
         sendAction(this.id, getSteps(), 1);
-        console.log('clicked ' + this.id + 'steps ' + getSteps());
+        console.log('clicked ' + this.id + ' steps ' + getSteps());
     };
 
     document.getElementById("back").onclick = function() {
@@ -37,12 +37,12 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     document.getElementById("leftRotate").onclick = function() {
-        sendAction(this.id, getSteps(), 3);
+        sendAction(this.id, getSteps(), 5);
         console.log('clicked ' + this.id);
     };
 
     document.getElementById("rightRotate").onclick = function() {
-        sendAction(this.id, getSteps(), 4);
+        sendAction(this.id, getSteps(), 6);
         console.log('clicked ' + this.id);
     };
 
