@@ -138,8 +138,9 @@ void setup() {
    pwmController.init(B000000);       
    pwmController.setPWMFrequency(50);
 
-  //  nana = Pad::makePad(pwmController, rightServoEvaluator, leftServoEvaluator, 2, 3 );
    moveController = new MoveController(pwmController, leftServo, rightServo, 2);
+   delay(500);
+   moveController->defaultPosition(true);
 }
 
 void loop() {

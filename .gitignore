@@ -11,32 +11,12 @@ tomcat
 .vscode
 .pioenvs
 
+.vscode/.BROWSE.C_CPP.DB-wal
+.vscode/.BROWSE.C_CPP.DB-shm
+.vscode/.BROWSE.C_CPP.DB
 .vscode/
 .pioenvs/
-<<<<<<< HEAD
 # Binaries
-=======
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-nbactions
-nb-configuration
-nbactions.
-nb-configuration.
-.nbactions
-.nb-configuration
-README
-
-### Eclipse ###
-.classpath
-.project
-.settings/
-### Binaries ###
->>>>>>> oleg
 *.7z
 *.dmg
 *.gz

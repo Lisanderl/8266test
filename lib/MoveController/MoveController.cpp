@@ -16,16 +16,16 @@ for(int i = 0; i < pairs; i++){
 }
 
 // does horizontal move for all _pads, with vertical move
-void MoveController::smartLeftRotation(int val){
+void MoveController::smartLeftRotation(int val, int del){
 for(unsigned int i = 0; i < pads.size(); i += 2){
-  pads.at(i)->smartHorisontalMove(val);
+  pads.at(i)->smartHorisontalMove(val, del);
  }
 }
 
 // does horizontal move for all _pads, with vertical move
-void MoveController::smartRightRotation(int val){
+void MoveController::smartRightRotation(int val, int del){
 for(unsigned int i = 1; i < pads.size(); i += 2){
-  pads.at(i)->smartHorisontalMove(val);
+  pads.at(i)->smartHorisontalMove(val, del);
  }
 }
 
@@ -44,19 +44,19 @@ void MoveController::crawlRightRotation(int val){
 
 
 void MoveController::defaultPosition(boolean witVertical){
- witVertical ? smartLeftRotation(DEFAULT_POSITION) : crawlLeftRotation(DEFAULT_POSITION);
- witVertical ? smartRightRotation(DEFAULT_POSITION) : crawlRightRotation(DEFAULT_POSITION);
+ witVertical ? smartLeftRotation(DEFAULT_POSITION, SERVO_DEL) : crawlLeftRotation(DEFAULT_POSITION);
+ witVertical ? smartRightRotation(DEFAULT_POSITION, SERVO_DEL) : crawlRightRotation(DEFAULT_POSITION);
 }
 
 void MoveController::frontPosition(boolean witVertical){
-   witVertical ? smartLeftRotation(FULL_POSITION) : smartLeftRotation(FULL_POSITION); 
-    witVertical ? smartRightRotation(FULL_POSITION) : crawlRightRotation(FULL_POSITION); 
+   witVertical ? smartLeftRotation(FULL_POSITION, SERVO_DEL) : crawlLeftRotation(FULL_POSITION); 
+    witVertical ? smartRightRotation(FULL_POSITION, SERVO_DEL) : crawlRightRotation(FULL_POSITION); 
 }
 
 
 void MoveController::backPosition(boolean witVertical){
-   witVertical ? smartLeftRotation(LOW_POSITION) : smartLeftRotation(LOW_POSITION);
-    witVertical ? smartRightRotation(LOW_POSITION) : crawlRightRotation(LOW_POSITION);
+   witVertical ? smartLeftRotation(LOW_POSITION, SERVO_DEL) : crawlLeftRotation(LOW_POSITION);
+    witVertical ? smartRightRotation(LOW_POSITION, SERVO_DEL) : crawlRightRotation(LOW_POSITION);
 }
 
 void MoveController::step(int val){
@@ -74,38 +74,37 @@ void MoveController::step(int val){
      break;}
 
      case LEFT : {
-     smartLeftRotation(DEFAULT_POSITION);
+     smartLeftRotation(DEFAULT_POSITION, SERVO_DEL);
      delay(5); 
-     smartRightRotation(FULL_POSITION);
+     smartRightRotation(FULL_POSITION, SERVO_DEL);
      delay(5); 
      crawlLeftRotation(FULL_POSITION);
      crawlRightRotation(DEFAULT_POSITION);
      break;}
 
      case RIGHT : {
-     smartLeftRotation(DEFAULT_POSITION);
+     smartLeftRotation(DEFAULT_POSITION, SERVO_DEL);
      delay(5); 
-     smartRightRotation(FULL_POSITION);
+     smartRightRotation(FULL_POSITION, SERVO_DEL);
      delay(5); 
      crawlLeftRotation(FULL_POSITION);
      crawlRightRotation(DEFAULT_POSITION);
      break;}
 
      case LEFT_TURN : {
-     smartLeftRotation(FULL_POSITION);
+     smartLeftRotation(FULL_POSITION, SERVO_DEL);
      delay(5); 
-     smartRightRotation(LOW_POSITION);
-     delay(5); 
-    defaultPosition(false);
-     break;}
-
-     case RIGHT_TURN : {
-     smartLeftRotation(LOW_POSITION);
-     delay(5); 
-     smartRightRotation(FULL_POSITION);
+     smartRightRotation(LOW_POSITION, SERVO_DEL);
      delay(5); 
      defaultPosition(false);
      break;}
 
+     case RIGHT_TURN : {
+     smartLeftRotation(LOW_POSITION, SERVO_DEL);
+     delay(5); 
+     smartRightRotation(FULL_POSITION, SERVO_DEL);
+     delay(5); 
+     defaultPosition(false);
+     break;}
   }
 }

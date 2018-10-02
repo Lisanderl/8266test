@@ -17,12 +17,12 @@ void Pad::horisontalMove(int val){
      _servoController->setChannelPWM(_horizontalServo, _servoEvaluator->angle180ToValue(val));
 }
 
-void Pad::smartHorisontalMove(int val){
+void Pad::smartHorisontalMove(int val, int del){
 
      verticalMove(DEFAULT_TOP);
-     delay(125);
+     delay(del);
      horisontalMove(val);
-     delay(200);
+     delay(del);
      verticalMove(DEFAULT_BOTTOM);
 }
 

@@ -25,15 +25,15 @@ void step(int val);
 
 private:
 
-void smartLeftRotation(int val);
-void smartRightRotation(int val);
+void smartLeftRotation(int val, int del);
+void smartRightRotation(int val, int del);
 void crawlLeftRotation(int val);
 void crawlRightRotation(int val);
 
     double const FULL_POSITION = 175.0;
     double const DEFAULT_POSITION = 88.0;
     double const LOW_POSITION = 5.0;
-
+    int const SERVO_DEL = 200;
 std::vector<Pad*> pads;
 PCA9685 _servoController;
 AngleSettings _leftServo;
