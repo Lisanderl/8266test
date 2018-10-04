@@ -5,13 +5,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
   function getSteps() {
-      return  document.getElementById("steps").value;
+      return parseInt(document.getElementById("steps").value);
   };
 
     function sendAction( name, steps, actionId ) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/action');
         xhr.setRequestHeader('Content-Type', 'application/json');
+        console.log(JSON.stringify({"name": name, "steps": steps, "actionId": actionId}));
         xhr.send(JSON.stringify({"name": name, "steps": steps, "actionId": actionId}));
     };
 

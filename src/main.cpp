@@ -38,12 +38,12 @@ MoveController *moveController;
 void action(){
   //TO DO add getting json
   Serial.println("start action arg: ");
-  Serial.println(server.args());
     if(server.args() > 0 ){
-      StaticJsonBuffer<50> jsonBuffer;
-      JsonObject& root = jsonBuffer.parseObject(server.arg(1));
-      if (root.success()) {
-   
+      String val = server.arg(0);
+      DynamicJsonBuffer jsonBuffer(60);
+      JsonObject& root = jsonBuffer.parseObject(val);
+      root.prettyPrintTo(Serial);
+      if (root.containsKey(name)) {
       Serial.println("start moving");
       server.send(200,  "text/plain", "Do some steps");
       int recivedSteps = root[steps].as<int>();
@@ -55,6 +55,7 @@ void action(){
       return;
      } 
     }
+      Serial.println("Some error: ");
 server.send(404, "text/plain", "can't read data from JSON");
 }
 /**
@@ -144,7 +145,6 @@ void setup() {
 
 void loop() {
   server.handleClient();
-
 }
 
 
