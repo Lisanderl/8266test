@@ -15,7 +15,7 @@ class Pad {
                         int verticalServo, int horizontalServo);
     void verticalMove(int val);
     void horisontalMove(int val);
-    void smartHorisontalMove(int val);
+    void smartHorisontalMove(int val, int del);
 
     private:
      Pad(PCA9685& servoController, AngleSettings& servoEvaluator, AngleSettings& defServoEvaluator, 
