@@ -5,12 +5,17 @@
 #include <ESP8266WebServer.h>
 #include <FS.h> 
 #include <ArduinoJson.h> 
+#include <MPU6050.h> 
 
 #include <Wire.h>
 #include <PCA9685.h>
 #include <AngleSettings.h>
- #include "Pad.h"
+#include "Pad.h"
 #include "MoveController.h"
+
+MPU6050 accelgyro;
+int16_t ax, ay, az;
+int16_t gx, gy, gz;
 
     // int const  MAX_VAL = 507;
     // int const  AVARAGE_VAL = 302;
@@ -56,7 +61,7 @@ void action(){
      } 
     }
       Serial.println("Some error: ");
-server.send(404, "text/plain", "can't read data from JSON");
+      server.send(404, "text/plain", "can't read data from JSON");
 }
 /**
  * load 
@@ -134,10 +139,17 @@ void setup() {
 
    Wire.begin(2, 14);
    Wire.setClock(400000);
+     delay(1000);
+    Serial.println("Initializing I2C devices...");
+    accelgyro.initialize();
+     delay(1000);
+    Serial.println("Testing device connections...");
+    Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
+
    delay(1000);
-   pwmController.resetDevices();      
-   pwmController.init(B000000);       
-   pwmController.setPWMFrequency(50);
+  //  pwmController.resetDevices();      
+  //  pwmController.init(B000000);       
+  //  pwmController.setPWMFrequency(50);
 
    moveController = new MoveController(pwmController, leftServo, rightServo, 2);
    delay(500);
@@ -145,7 +157,20 @@ void setup() {
 }
 
 void loop() {
-  server.handleClient();
+ // server.handleClient();
+
+  accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+
+  
+   
+        Serial.print("a/g:\t");
+        Serial.print(ax); Serial.print("\t");
+        Serial.print(ay); Serial.print("\t");
+        Serial.print(az); Serial.print("\t");
+        Serial.print(gx); Serial.print("\t");
+        Serial.print(gy); Serial.print("\t");
+        Serial.println(gz);
+ delay(3000);
 }
 
 
