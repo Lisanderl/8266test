@@ -52,8 +52,10 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
-
-
+.pioenvs/*
+.pioenvs*
+ .vscode/*
+ .vscode*
 # OS
 .DS_Store
 
