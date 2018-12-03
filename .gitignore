@@ -53,7 +53,8 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
-
+.vscode/*
+.vscode*
 # OS
 .DS_Store
 
