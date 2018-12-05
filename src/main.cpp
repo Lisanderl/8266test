@@ -5,7 +5,9 @@
 #include <ESP8266WebServer.h>
 #include <FS.h> 
 #include <ArduinoJson.h> 
+#include "MPU6050_6Axis_MotionApps20.h"
 #include <MPU6050.h> 
+
 
 #include <Wire.h>
 #include <PCA9685.h>
@@ -13,9 +15,14 @@
 #include "Pad.h"
 #include "MoveController.h"
 
-MPU6050 accelgyro;
-int16_t ax, ay, az;
-int16_t gx, gy, gz;
+#define INTERRUPT_PIN 13 
+#define  SDA1 2
+#define SCL1 14
+MPU6050 mpu;
+unsigned int fifoCount;     // count of all bytes currently in FIFO
+unsigned int packetSize;   
+uint8_t fifoBuffer[64]; // FIFO storage buffer
+volatile bool mpuInterruption = false;
 
     // int const  MAX_VAL = 507;
     // int const  AVARAGE_VAL = 302;
@@ -24,6 +31,9 @@ int16_t gx, gy, gz;
 String const name = "name";
 String const steps = "steps";
 String const actionId = "actionId";
+VectorInt16 aa, gyro;
+VectorFloat gravity;
+Quaternion q;
 
 //WIFI CONFIG
 const char* ssid = "Lisanderl";
@@ -35,6 +45,10 @@ AngleSettings rightServo (507, 97);
 
 PCA9685 pwmController;
 MoveController *moveController;
+
+void interruptor(){
+  mpuInterruption = true;
+}
 
 /**
  * if data are correct, do action and send status 200
@@ -126,52 +140,118 @@ void restConfig(){
   server.begin();
 }
 
-
 void setup() {
+   
   Serial.begin(115200);
   delay(1000);
+  pinMode(INTERRUPT_PIN, INPUT);
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), interruptor, RISING);
+
   WiFi.mode(WIFI_AP);           //Only Access point
   WiFi.softAP(ssid, password);  //Start HOTspot removing password will disable security
   myIP = WiFi.softAPIP(); //Get IP address
 
   SPIFFS.begin();
   restConfig();
-
-   Wire.begin(2, 14);
+   Wire.begin(SDA1, SCL1);
    Wire.setClock(400000);
      delay(1000);
     Serial.println("Initializing I2C devices...");
-    accelgyro.initialize();
+    mpu.initialize();
+    mpu.dmpInitialize();
+    mpu.setIntEnabled(false); 
+    mpu.setIntDMPEnabled(true);
+    mpu.setDMPEnabled(true);
      delay(1000);
     Serial.println("Testing device connections...");
-    Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
+    Serial.println(mpu.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
 
    delay(1000);
-  //  pwmController.resetDevices();      
-  //  pwmController.init(B000000);       
-  //  pwmController.setPWMFrequency(50);
+   pwmController.resetDevices();      
+   pwmController.init(B000000);       
+   pwmController.setPWMFrequency(50);
 
    moveController = new MoveController(pwmController, leftServo, rightServo, 2);
    delay(500);
    moveController->defaultPosition(true);
 }
 
-void loop() {
- // server.handleClient();
+void selfTest(){
 
-  accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  mpu.setAccelXSelfTest(true);
+  mpu.setAccelYSelfTest(true);
+  mpu.setAccelZSelfTest(true);
 
-  
-   
-        Serial.print("a/g:\t");
-        Serial.print(ax); Serial.print("\t");
-        Serial.print(ay); Serial.print("\t");
-        Serial.print(az); Serial.print("\t");
-        Serial.print(gx); Serial.print("\t");
-        Serial.print(gy); Serial.print("\t");
-        Serial.println(gz);
- delay(3000);
+ Serial.print("Z accel factory val: ");
+ Serial.println(mpu.getAccelZSelfTestFactoryTrim());
+
+  Serial.print("X accel factory val: ");
+ Serial.println(mpu.getAccelXSelfTestFactoryTrim());
+
+  Serial.print("Y accel factory val: ");
+ Serial.println(mpu.getAccelYSelfTestFactoryTrim());
+
+  Serial.print("Z gyro factory val: ");
+ Serial.println(mpu.getGyroZSelfTestFactoryTrim());
+
+  Serial.print("X gyro factory val: ");
+ Serial.println(mpu.getGyroXSelfTestFactoryTrim());
+
+  Serial.print("Y gyro factory val: ");
+ Serial.println(mpu.getGyroYSelfTestFactoryTrim());
 }
+
+void aceelLoop(){
+
+  //calculate temperature from MCU and print it
+  float temp = (mpu.getTemperature()/340.0)+36.53;
+  Serial.println("temperature = ");
+  Serial.print(temp);
+ uint8_t mpuIntStatus = mpu.getIntStatus();
+ Serial.println("FF_BIT :");
+ Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_FF_BIT));
+ Serial.println("MOT_BIT :");            
+ Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_MOT_BIT));
+ Serial.println("ZMOT_BIT :");           
+ Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_ZMOT_BIT));
+ Serial.println("FIFO_OFLOW_BIT :");          
+ Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_FIFO_OFLOW_BIT));
+ Serial.println("I2C_MST_INT_BIT :");    
+ Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_I2C_MST_INT_BIT));
+ Serial.println("PLL_RDY_INT_BIT :");   
+ Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_PLL_RDY_INT_BIT));
+ Serial.println("DMP_INT_BIT :");   
+ Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_DMP_INT_BIT));
+ Serial.println("DATA_RDY_BIT :");       
+ Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_DATA_RDY_BIT));
+
+ if (mpuIntStatus & _BV(MPU6050_INTERRUPT_DMP_INT_BIT)) {
+        // wait for correct available data length, should be a VERY short wait
+        while (fifoCount < packetSize) 
+        fifoCount = mpu.getFIFOCount();
+
+        // read a packet from FIFO
+        mpu.getFIFOBytes(fifoBuffer, packetSize);
+        
+        // track FIFO count here in case there is > 1 packet available
+        // (this lets us immediately read more without waiting for an interrupt)
+        fifoCount -= packetSize;
+        mpu.dmpGetGyro(&gyro, fifoBuffer);
+        mpu.dmpGetAccel(&aa, fifoBuffer);
+        mpu.dmpGetGravity(&gravity, &q);
+ }
+}
+
+void loop() {
+
+server.handleClient();
+
+if(mpuInterruption){
+aceelLoop();
+mpuInterruption = false;
+ }
+} 
+
 
 
 
