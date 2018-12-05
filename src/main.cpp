@@ -144,8 +144,6 @@ void setup() {
    
   Serial.begin(115200);
   delay(1000);
-  pinMode(INTERRUPT_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), interruptor, RISING);
 
   WiFi.mode(WIFI_AP);           //Only Access point
   WiFi.softAP(ssid, password);  //Start HOTspot removing password will disable security
@@ -158,11 +156,13 @@ void setup() {
      delay(1000);
     Serial.println("Initializing I2C devices...");
     mpu.initialize();
-    mpu.dmpInitialize();
-    mpu.setIntEnabled(false); 
+    mpu.setIntEnabled(true); 
     mpu.setIntDMPEnabled(true);
     mpu.setDMPEnabled(true);
-     delay(1000);
+    mpu.dmpInitialize();
+    delay(1000);
+    pinMode(INTERRUPT_PIN, INPUT);
+    attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), interruptor, RISING); 
     Serial.println("Testing device connections...");
     Serial.println(mpu.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
 
@@ -199,6 +199,14 @@ void selfTest(){
 
   Serial.print("Y gyro factory val: ");
  Serial.println(mpu.getGyroYSelfTestFactoryTrim());
+
+// Z accel factory val: 19
+// X accel factory val: 15
+// Y accel factory val: 13
+// Z gyro factory val: 21
+// X gyro factory val: 15
+// Y gyro factory val: 14
+
 }
 
 void aceelLoop(){
@@ -232,11 +240,17 @@ void aceelLoop(){
 
         // read a packet from FIFO
         mpu.getFIFOBytes(fifoBuffer, packetSize);
-        
+       
         // track FIFO count here in case there is > 1 packet available
         // (this lets us immediately read more without waiting for an interrupt)
         fifoCount -= packetSize;
+         mpu.resetFIFO();
         mpu.dmpGetGyro(&gyro, fifoBuffer);
+        Serial.println("gyro val = x y z");
+        Serial.println(gyro.x);
+        Serial.println(gyro.y);
+        Serial.println(gyro.z);
+
         mpu.dmpGetAccel(&aa, fifoBuffer);
         mpu.dmpGetGravity(&gravity, &q);
  }
@@ -251,6 +265,8 @@ aceelLoop();
 mpuInterruption = false;
 delay(500);
  }
+ Serial.println("ssssss");
+ delay(2000);
 } 
 
 
