@@ -249,6 +249,7 @@ server.handleClient();
 if(mpuInterruption){
 aceelLoop();
 mpuInterruption = false;
+delay(500);
  }
 } 
 
