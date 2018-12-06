@@ -155,11 +155,10 @@ void setup() {
    Wire.setClock(400000);
      delay(1000);
     Serial.println("Initializing I2C devices...");
-    mpu.initialize();
-    mpu.setIntEnabled(true); 
-    mpu.setIntDMPEnabled(true);
-    mpu.setDMPEnabled(true);
-    mpu.dmpInitialize();
+    // mpu.initialize();
+    // mpu.dmpInitialize(); 
+    // mpu.setIntEnabled(true);
+    // mpu.setDMPEnabled(true);
     delay(1000);
     pinMode(INTERRUPT_PIN, INPUT);
     attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), interruptor, RISING); 
@@ -216,20 +215,29 @@ void aceelLoop(){
   Serial.println("temperature = ");
   Serial.print(temp);
  uint8_t mpuIntStatus = mpu.getIntStatus();
+
  Serial.println("FF_BIT :");
+ Serial.println(mpuIntStatus);
  Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_FF_BIT));
+ 
  Serial.println("MOT_BIT :");            
  Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_MOT_BIT));
+ 
  Serial.println("ZMOT_BIT :");           
  Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_ZMOT_BIT));
+  
  Serial.println("FIFO_OFLOW_BIT :");          
  Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_FIFO_OFLOW_BIT));
+  
  Serial.println("I2C_MST_INT_BIT :");    
  Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_I2C_MST_INT_BIT));
+
  Serial.println("PLL_RDY_INT_BIT :");   
  Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_PLL_RDY_INT_BIT));
+ 
  Serial.println("DMP_INT_BIT :");   
  Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_DMP_INT_BIT));
+ 
  Serial.println("DATA_RDY_BIT :");       
  Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_DATA_RDY_BIT));
 
@@ -244,7 +252,7 @@ void aceelLoop(){
         // track FIFO count here in case there is > 1 packet available
         // (this lets us immediately read more without waiting for an interrupt)
         fifoCount -= packetSize;
-         mpu.resetFIFO();
+
         mpu.dmpGetGyro(&gyro, fifoBuffer);
         Serial.println("gyro val = x y z");
         Serial.println(gyro.x);
@@ -252,21 +260,26 @@ void aceelLoop(){
         Serial.println(gyro.z);
 
         mpu.dmpGetAccel(&aa, fifoBuffer);
+
+        Serial.println("aa val = x y z");
+        Serial.println(aa.x);
+        Serial.println(aa.y);
+        Serial.println(aa.z);
         mpu.dmpGetGravity(&gravity, &q);
  }
 }
 
 void loop() {
 
-server.handleClient();
+  server.handleClient();
 
-if(mpuInterruption){
-aceelLoop();
-mpuInterruption = false;
-delay(500);
- }
- Serial.println("ssssss");
- delay(2000);
+  // if(mpuInterruption){
+  // aceelLoop();
+  // mpuInterruption = false;
+  // }
+  
+  // Serial.println("ssssss");
+  // delay(2000);
 } 
 
 
