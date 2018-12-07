@@ -18,11 +18,19 @@
 #define INTERRUPT_PIN 13 
 #define  SDA1 2
 #define SCL1 14
+// Z accel factory val: 19
+// X accel factory val: 15
+// Y accel factory val: 13
+// Z gyro factory val: 21
+// X gyro factory val: 15
+// Y gyro factory val: 14
 MPU6050 mpu;
 unsigned int fifoCount;     // count of all bytes currently in FIFO
 unsigned int packetSize;   
 uint8_t fifoBuffer[64]; // FIFO storage buffer
 volatile bool mpuInterruption = false;
+VectorInt16 aa, gyro;
+float temp;
 
     // int const  MAX_VAL = 507;
     // int const  AVARAGE_VAL = 302;
@@ -31,9 +39,7 @@ volatile bool mpuInterruption = false;
 String const name = "name";
 String const steps = "steps";
 String const actionId = "actionId";
-VectorInt16 aa, gyro;
-VectorFloat gravity;
-Quaternion q;
+
 
 //WIFI CONFIG
 const char* ssid = "Lisanderl";
@@ -133,6 +139,28 @@ server.sendHeader("Location", "/index.html", true);
 server.send ( 302, "text/plain", "");
 }
 
+void handleMPU(){
+
+ uint8_t mpuIntStatus = 0;
+ if(mpuInterruption){
+   mpuIntStatus = mpu.getIntStatus();
+  mpuInterruption = false;
+ }
+      if ((mpuIntStatus & _BV(MPU6050_INTERRUPT_FIFO_OFLOW_BIT)) || fifoCount >= 1024) {
+        mpu.resetFIFO();
+        fifoCount = mpu.getFIFOCount();
+    // otherwise, check for DMP data ready interrupt (this should happen frequently)
+    } else if (mpuIntStatus & _BV(MPU6050_INTERRUPT_DMP_INT_BIT)) {
+        // wait for correct available data length, should be a VERY short wait
+        while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
+        mpu.getFIFOBytes(fifoBuffer, packetSize);
+        mpu.dmpGetGyro(&gyro, fifoBuffer);
+        mpu.dmpGetAccel(&aa, fifoBuffer);
+        temp = (mpu.getTemperature()/340.0)+36.53;
+
+    }
+}
+
 void restConfig(){
 
   server.on("/", handleRoot);
@@ -140,6 +168,7 @@ void restConfig(){
   server.onNotFound(handleWebRequests); 
   server.begin();
 }
+
 
 void setup() {
    
@@ -177,141 +206,10 @@ void setup() {
    moveController->defaultPosition(true);
 }
 
-void selfTest(){
-
-  mpu.setAccelXSelfTest(true);
-  mpu.setAccelYSelfTest(true);
-  mpu.setAccelZSelfTest(true);
-
- Serial.print("Z accel factory val: ");
- Serial.println(mpu.getAccelZSelfTestFactoryTrim());
-
-  Serial.print("X accel factory val: ");
- Serial.println(mpu.getAccelXSelfTestFactoryTrim());
-
-  Serial.print("Y accel factory val: ");
- Serial.println(mpu.getAccelYSelfTestFactoryTrim());
-
-  Serial.print("Z gyro factory val: ");
- Serial.println(mpu.getGyroZSelfTestFactoryTrim());
-
-  Serial.print("X gyro factory val: ");
- Serial.println(mpu.getGyroXSelfTestFactoryTrim());
-
-  Serial.print("Y gyro factory val: ");
- Serial.println(mpu.getGyroYSelfTestFactoryTrim());
-
-// Z accel factory val: 19
-// X accel factory val: 15
-// Y accel factory val: 13
-// Z gyro factory val: 21
-// X gyro factory val: 15
-// Y gyro factory val: 14
-
-}
-
-void aceelLoop(){
-
-  //calculate temperature from MCU and print it
-  float temp = (mpu.getTemperature()/340.0)+36.53;
-  Serial.println("temperature = ");
-  Serial.print(temp);
- uint8_t mpuIntStatus = mpu.getIntStatus();
-
- Serial.println("FF_BIT :");
- Serial.println(mpuIntStatus);
- Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_FF_BIT));
- 
- Serial.println("MOT_BIT :");            
- Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_MOT_BIT));
- 
- Serial.println("ZMOT_BIT :");           
- Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_ZMOT_BIT));
-  
- Serial.println("FIFO_OFLOW_BIT :");          
- Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_FIFO_OFLOW_BIT));
-  
- Serial.println("I2C_MST_INT_BIT :");    
- Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_I2C_MST_INT_BIT));
-
- Serial.println("PLL_RDY_INT_BIT :");   
- Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_PLL_RDY_INT_BIT));
- 
- Serial.println("DMP_INT_BIT :");   
- Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_DMP_INT_BIT));
- 
- Serial.println("DATA_RDY_BIT :");       
- Serial.println(mpuIntStatus & _BV(MPU6050_INTERRUPT_DATA_RDY_BIT));
-
- if (mpuIntStatus & _BV(MPU6050_INTERRUPT_DMP_INT_BIT)) {
-        // wait for correct available data length, should be a VERY short wait
-        while (fifoCount < packetSize) 
-        fifoCount = mpu.getFIFOCount();
-
-        // read a packet from FIFO
-        mpu.getFIFOBytes(fifoBuffer, packetSize);
-       
-        // track FIFO count here in case there is > 1 packet available
-        // (this lets us immediately read more without waiting for an interrupt)
-        fifoCount -= packetSize;
-
-        mpu.dmpGetGyro(&gyro, fifoBuffer);
-        Serial.println("gyro val = x y z");
-        Serial.println(gyro.x);
-        Serial.println(gyro.y);
-        Serial.println(gyro.z);
-
-        mpu.dmpGetAccel(&aa, fifoBuffer);
-
-        Serial.println("aa val = x y z");
-        Serial.println(aa.x);
-        Serial.println(aa.y);
-        Serial.println(aa.z);
-        mpu.dmpGetGravity(&gravity, &q);
- }
-}
-
 void loop() {
 
-  uint8_t mpuIntStatus = 0;
   server.handleClient();
- if(mpuInterruption){
-   mpuIntStatus = mpu.getIntStatus();
-  mpuInterruption = false;
- }
-      if ((mpuIntStatus & _BV(MPU6050_INTERRUPT_FIFO_OFLOW_BIT)) || fifoCount >= 1024) {
-        // reset so we can continue cleanly
-        mpu.resetFIFO();
-        fifoCount = mpu.getFIFOCount();
-        Serial.println(F("FIFO overflow!"));
-
-    // otherwise, check for DMP data ready interrupt (this should happen frequently)
-    } else if (mpuIntStatus & _BV(MPU6050_INTERRUPT_DMP_INT_BIT)) {
-        // wait for correct available data length, should be a VERY short wait
-        while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
-
-        // read a packet from FIFO
-        mpu.getFIFOBytes(fifoBuffer, packetSize);
-        
-        // track FIFO count here in case there is > 1 packet available
-        // (this lets us immediately read more without waiting for an interrupt)
-        fifoCount -= packetSize;
-
-        mpu.dmpGetGyro(&gyro, fifoBuffer);
-        Serial.println("gyro val = x y z");
-        Serial.println(gyro.x);
-        Serial.println(gyro.y);
-        Serial.println(gyro.z);
-
-        mpu.dmpGetAccel(&aa, fifoBuffer);
-
-        Serial.println("aa val = x y z");
-        Serial.println(aa.x);
-        Serial.println(aa.y);
-        Serial.println(aa.z);
-        mpu.dmpGetGravity(&gravity, &q);
-    }
-
+  handleMPU();
 } 
 
 
