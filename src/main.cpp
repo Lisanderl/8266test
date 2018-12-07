@@ -40,8 +40,9 @@ const char* ssid = "Lisanderl";
 const char* password = "123qwerty";
 ESP8266WebServer server(85);
 IPAddress myIP;
-AngleSettings leftServo (97, 507);
-AngleSettings rightServo (507, 97);
+AngleSettings leftServo (90, 500);
+AngleSettings rightServo (500, 90);
+AngleSettings defaultServo (500, 90);
 
 PCA9685 pwmController;
 MoveController *moveController;
@@ -155,10 +156,11 @@ void setup() {
    Wire.setClock(400000);
      delay(1000);
     Serial.println("Initializing I2C devices...");
-    // mpu.initialize();
-    // mpu.dmpInitialize(); 
-    // mpu.setIntEnabled(true);
-    // mpu.setDMPEnabled(true);
+    mpu.initialize();
+    mpu.dmpInitialize(); 
+    mpu.setIntEnabled(true);
+    mpu.setDMPEnabled(true);
+    packetSize = mpu.dmpGetFIFOPacketSize();
     delay(1000);
     pinMode(INTERRUPT_PIN, INPUT);
     attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), interruptor, RISING); 
@@ -170,7 +172,7 @@ void setup() {
    pwmController.init(B000000);       
    pwmController.setPWMFrequency(50);
 
-   moveController = new MoveController(pwmController, leftServo, rightServo, 2);
+   moveController = new MoveController(pwmController, leftServo, rightServo, defaultServo, 2);
    delay(500);
    moveController->defaultPosition(true);
 }
@@ -271,15 +273,45 @@ void aceelLoop(){
 
 void loop() {
 
+  uint8_t mpuIntStatus = 0;
   server.handleClient();
+ if(mpuInterruption){
+   mpuIntStatus = mpu.getIntStatus();
+  mpuInterruption = false;
+ }
+      if ((mpuIntStatus & _BV(MPU6050_INTERRUPT_FIFO_OFLOW_BIT)) || fifoCount >= 1024) {
+        // reset so we can continue cleanly
+        mpu.resetFIFO();
+        fifoCount = mpu.getFIFOCount();
+        Serial.println(F("FIFO overflow!"));
 
-  // if(mpuInterruption){
-  // aceelLoop();
-  // mpuInterruption = false;
-  // }
-  
-  // Serial.println("ssssss");
-  // delay(2000);
+    // otherwise, check for DMP data ready interrupt (this should happen frequently)
+    } else if (mpuIntStatus & _BV(MPU6050_INTERRUPT_DMP_INT_BIT)) {
+        // wait for correct available data length, should be a VERY short wait
+        while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
+
+        // read a packet from FIFO
+        mpu.getFIFOBytes(fifoBuffer, packetSize);
+        
+        // track FIFO count here in case there is > 1 packet available
+        // (this lets us immediately read more without waiting for an interrupt)
+        fifoCount -= packetSize;
+
+        mpu.dmpGetGyro(&gyro, fifoBuffer);
+        Serial.println("gyro val = x y z");
+        Serial.println(gyro.x);
+        Serial.println(gyro.y);
+        Serial.println(gyro.z);
+
+        mpu.dmpGetAccel(&aa, fifoBuffer);
+
+        Serial.println("aa val = x y z");
+        Serial.println(aa.x);
+        Serial.println(aa.y);
+        Serial.println(aa.z);
+        mpu.dmpGetGravity(&gravity, &q);
+    }
+
 } 
 
 

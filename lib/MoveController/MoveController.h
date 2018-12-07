@@ -14,8 +14,8 @@ public:
 
 enum Direction {STRAIGHT = 1, BACK = 2, LEFT = 3, RIGHT = 4, LEFT_TURN = 5, RIGHT_TURN = 6};
 
-MoveController(PCA9685 &servoController, AngleSettings& leftServo,
-                             AngleSettings& rightServo, int pairs);
+MoveController(PCA9685& servoController, AngleSettings& leftServo,
+                             AngleSettings& rightServo, AngleSettings& defaultServo, int pairs);
 
 void defaultPosition(boolean witVertical);
 void frontPosition(boolean witVertical);
@@ -38,5 +38,6 @@ std::vector<Pad*> pads;
 PCA9685 _servoController;
 AngleSettings _leftServo;
 AngleSettings _rightServo;
+AngleSettings _defaultServo;
 };
 #endif
