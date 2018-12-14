@@ -46,9 +46,9 @@ const char* ssid = "Lisanderl";
 const char* password = "123qwerty";
 ESP8266WebServer server(85);
 IPAddress myIP;
-AngleSettings leftServo (90, 500);
-AngleSettings rightServo (500, 90);
-AngleSettings defaultServo (500, 90);
+AngleSettings leftServo (97, 507);
+AngleSettings rightServo (507, 97);
+AngleSettings defaultServo (507, 97);
 
 PCA9685 pwmController;
 MoveController *moveController;
@@ -83,6 +83,28 @@ void action(){
     }
       Serial.println("Some error: ");
       server.send(404, "text/plain", "can't read data from JSON");
+}
+
+void gyroResponse(){
+
+      DynamicJsonBuffer jsonBuffer(40);
+      JsonObject& object = jsonBuffer.createObject();
+      JsonObject& accelObj = object.createNestedObject("Accel");
+      JsonObject& gyroObj = object.createNestedObject("Gyro");
+      gyroObj["x1"] = gyro.x;
+      gyroObj["y1"] = gyro.y;
+      gyroObj["z1"] = gyro.z;
+      accelObj["X"] = aa.x;
+      accelObj["Y"] = aa.y;
+      accelObj["Z"] = aa.z;
+      object["Temp"] = (mpu.getTemperature()/340.0)+36.53;
+     if (object.success() & accelObj.success() & gyroObj.success()) {
+      String json = "";
+      object.prettyPrintTo(json);
+      server.send(200, "json", json);
+     } else {
+     server.send(404, "text/plain", "can't read data from JSON");
+     }
 }
 /**
  * load 
@@ -154,10 +176,8 @@ void handleMPU(){
         // wait for correct available data length, should be a VERY short wait
         while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
         mpu.getFIFOBytes(fifoBuffer, packetSize);
-        mpu.dmpGetGyro(&gyro, fifoBuffer);
-        mpu.dmpGetAccel(&aa, fifoBuffer);
-        temp = (mpu.getTemperature()/340.0)+36.53;
-
+        mpu.dmpGetGyro(&aa, fifoBuffer);
+        mpu.dmpGetAccel(&gyro, fifoBuffer);
     }
 }
 
@@ -165,6 +185,7 @@ void restConfig(){
 
   server.on("/", handleRoot);
   server.on("/action", HTTP_POST, action);
+  server.on("/gyro", HTTP_GET, gyroResponse);
   server.onNotFound(handleWebRequests); 
   server.begin();
 }

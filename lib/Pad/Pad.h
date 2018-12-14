@@ -21,8 +21,8 @@ class Pad {
      Pad(PCA9685& servoController, AngleSettings& servoEvaluator, AngleSettings& defServoEvaluator, 
                         int verticalServo, int horizontalServo);
                         
-    int const DEFAULT_TOP = 105;
-    int const DEFAULT_BOTTOM = 2;
+    int const DEFAULT_TOP = 100;
+    int const DEFAULT_BOTTOM = 5;
    
     int _verticalServo;
     int _horizontalServo;
